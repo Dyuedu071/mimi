@@ -68,6 +68,7 @@ export default function ProfilePage() {
   const persistUser = (nextUser) => {
     setUser(nextUser);
     sessionStorage.setItem('user', JSON.stringify(nextUser));
+    window.dispatchEvent(new Event('mimi:user-updated'));
   };
 
   const onPickAvatar = () => {
