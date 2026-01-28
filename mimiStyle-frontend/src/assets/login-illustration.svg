@@ -1,0 +1,62 @@
+<svg width="560" height="420" viewBox="0 0 560 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White rounded card background is handled by CSS; this SVG is just the illustration -->
+  <g>
+    <!-- shadow -->
+    <ellipse cx="280" cy="360" rx="150" ry="26" fill="#F3F4F6"/>
+
+    <!-- baby body -->
+    <g transform="translate(215,85)">
+      <!-- head -->
+      <circle cx="65" cy="60" r="52" fill="#F6B8A9"/>
+      <!-- hair -->
+      <path d="M27 46C35 18 62 6 86 12C110 18 122 40 118 58C106 42 89 37 72 37C54 37 39 40 27 46Z" fill="#D2873A"/>
+      <path d="M34 54C45 40 60 34 77 34C93 34 108 40 117 54C110 62 98 66 83 66H70C56 66 42 62 34 54Z" fill="#D2873A" opacity="0.85"/>
+
+      <!-- face -->
+      <circle cx="48" cy="68" r="4.3" fill="#111827"/>
+      <circle cx="82" cy="68" r="4.3" fill="#111827"/>
+      <path d="M59 83C64 88 71 88 76 83" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+      <!-- blush -->
+      <circle cx="35" cy="78" r="9" fill="#F59FB1" opacity="0.55"/>
+      <circle cx="95" cy="78" r="9" fill="#F59FB1" opacity="0.55"/>
+
+      <!-- neck -->
+      <rect x="55" y="104" width="20" height="12" rx="6" fill="#F6B8A9"/>
+
+      <!-- torso -->
+      <path d="M38 118C38 108 46 100 56 100H74C84 100 92 108 92 118V182C92 195 81 206 68 206H62C49 206 38 195 38 182V118Z" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="3"/>
+
+      <!-- arms -->
+      <path d="M33 132C22 138 16 151 18 164C20 175 29 183 40 183" stroke="#F6B8A9" stroke-width="18" stroke-linecap="round"/>
+      <path d="M97 132C108 138 114 151 112 164C110 175 101 183 90 183" stroke="#F6B8A9" stroke-width="18" stroke-linecap="round"/>
+
+      <!-- legs/pants (sitting) -->
+      <path d="M48 200C36 214 30 236 32 258C34 279 47 295 66 295C85 295 98 279 100 258C102 236 96 214 84 200" fill="#5AA7E5"/>
+      <!-- socks/feet -->
+      <path d="M36 290C30 302 30 314 36 324C45 338 62 338 71 324C77 314 77 302 71 290" fill="#FFFFFF"/>
+      <path d="M89 290C83 302 83 314 89 324C98 338 115 338 124 324C130 314 130 302 124 290" fill="#FFFFFF"/>
+    </g>
+
+    <!-- toys -->
+    <!-- ball left -->
+    <circle cx="185" cy="320" r="22" fill="#F47C85"/>
+    <circle cx="176" cy="312" r="6" fill="#FFFFFF" opacity="0.55"/>
+    <!-- duck 1 -->
+    <g transform="translate(245,298)">
+      <circle cx="34" cy="26" r="22" fill="#F7D24B"/>
+      <circle cx="47" cy="22" r="6" fill="#111827"/>
+      <path d="M12 25C5 22 2 18 2 14C2 10 5 8 10 10L20 14C24 16 24 20 20 22L12 25Z" fill="#F59E0B"/>
+      <circle cx="30" cy="14" r="5" fill="#111827"/>
+    </g>
+    <!-- ball center -->
+    <circle cx="360" cy="318" r="18" fill="#55D4C8"/>
+    <circle cx="354" cy="312" r="5" fill="#FFFFFF" opacity="0.55"/>
+    <!-- duck 2 -->
+    <g transform="translate(405,300)">
+      <circle cx="34" cy="26" r="22" fill="#F7D24B"/>
+      <circle cx="47" cy="22" r="6" fill="#111827"/>
+      <path d="M12 25C5 22 2 18 2 14C2 10 5 8 10 10L20 14C24 16 24 20 20 22L12 25Z" fill="#F59E0B"/>
+      <circle cx="30" cy="14" r="5" fill="#111827"/>
+    </g>
+  </g>
+</svg>
