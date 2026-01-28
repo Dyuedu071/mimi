@@ -3,6 +3,9 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import ProductManagementPage from './pages/ProductManagementPage';
+import AddProductPage from './pages/AddProductPage';
+import RevenuePage from './pages/RevenuePage';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -18,6 +21,30 @@ function App() {
           element={
             <ProtectedRoute>
               <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <ProductManagementPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add"
+          element={
+            <ProtectedRoute>
+              <AddProductPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/revenue"
+          element={
+            <ProtectedRoute>
+              <RevenuePage />
             </ProtectedRoute>
           }
         />

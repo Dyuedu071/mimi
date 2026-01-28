@@ -81,22 +81,46 @@ export default function Header() {
               </div>
               <div className="app-dropdown-divider"></div>
               <div className="app-dropdown-menu">
-                <button className="app-dropdown-item">
+                <button 
+                  className="app-dropdown-item"
+                  onClick={() => {
+                    // TODO: Navigate to profile page
+                    setShowDropdown(false);
+                  }}
+                >
                   <Users className="app-dropdown-icon" size={20} />
                   <span>Xem tất cả trang cá nhân</span>
                   <ChevronRight className="app-dropdown-chevron" size={16} />
                 </button>
-                <button className="app-dropdown-item">
+                <button 
+                  className="app-dropdown-item"
+                  onClick={() => {
+                    // TODO: Navigate to cart page
+                    setShowDropdown(false);
+                  }}
+                >
                   <ShoppingCart className="app-dropdown-icon" size={20} />
                   <span>Xem giỏ hàng</span>
                   <ChevronRight className="app-dropdown-chevron" size={16} />
                 </button>
-                <button className="app-dropdown-item">
+                <button 
+                  className="app-dropdown-item"
+                  onClick={() => {
+                    navigate('/products');
+                    setShowDropdown(false);
+                  }}
+                >
                   <Package className="app-dropdown-icon" size={20} />
                   <span>Sản phẩm đăng bán</span>
                   <ChevronRight className="app-dropdown-chevron" size={16} />
                 </button>
-                <button className="app-dropdown-item">
+                <button 
+                  className="app-dropdown-item"
+                  onClick={() => {
+                    // TODO: Navigate to settings page
+                    setShowDropdown(false);
+                  }}
+                >
                   <Settings className="app-dropdown-icon" size={20} />
                   <span>Cài đặt</span>
                   <ChevronRight className="app-dropdown-chevron" size={16} />

@@ -1,0 +1,483 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Upload, MapPin } from 'lucide-react';
+import { createProduct } from '../api/product';
+import '../styles/AddProductPage.css';
+
+const AddProductPage = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    tradeType: 'BUY_ONLY', // BUY_ONLY, RENT_ONLY, BOTH
+    condition: 'NEW', // NEW, USED, LIKE_NEW
+    description: '',
+    price: '',
+    rentPrice: '',
+    rentUnit: 'MONTH',
+    address: '',
+    images: [],
+    certificates: []
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleTradeTypeChange = (type) => {
+    setFormData(prev => ({
+      ...prev,
+      tradeType: type
+    }));
+  };
+
+  const handleConditionChange = (condition) => {
+    setFormData(prev => ({
+      ...prev,
+      condition: condition
+    }));
+  };
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    // In a real app, you would upload these to a server
+    setFormData(prev => ({
+      ...prev,
+      images: [...prev.images, ...files]
+    }));
+  };
+
+  const handleCertificateUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setFormData(prev => ({
+      ...prev,
+      certificates: [...prev.certificates, ...files]
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validate required fields
+    if (!formData.name.trim()) {
+      newErrors.name = 'Tên sản phẩm là bắt buộc';
+    }
+
+    if (!formData.description.trim()) {
+      newErrors.description = 'Mô tả sản phẩm là bắt buộc';
+    }
+
+    if (!formData.address.trim()) {
+      newErrors.address = 'Địa chỉ là bắt buộc';
+    }
+
+    // Validate price based on trade type
+    if (formData.tradeType === 'BUY_ONLY' || formData.tradeType === 'BOTH') {
+      if (!formData.price || parseFloat(formData.price) <= 0) {
+        newErrors.price = 'Giá bán phải lớn hơn 0';
+      }
+    }
+
+    if (formData.tradeType === 'RENT_ONLY' || formData.tradeType === 'BOTH') {
+      if (!formData.rentPrice || parseFloat(formData.rentPrice) <= 0) {
+        newErrors.rentPrice = 'Giá thuê phải lớn hơn 0';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitError('');
+    setSuccessMessage('');
+    
+    // Validate form
+    if (!validateForm()) {
+      setSubmitError('Vui lòng kiểm tra lại thông tin đã nhập');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Prepare data for API - Don't send seller and category objects
+      const productData = {
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        buyPrice: formData.tradeType === 'RENT_ONLY' ? null : parseFloat(formData.price) || null,
+        rentPrice: formData.tradeType === 'BUY_ONLY' ? null : parseFloat(formData.rentPrice) || null,
+        rentUnit: formData.tradeType === 'BUY_ONLY' ? null : formData.rentUnit,
+        tradeType: formData.tradeType,
+        conditionPercentage: getConditionPercentage(formData.condition),
+        addressContact: formData.address.trim(),
+        status: 'ACTIVE'
+        // Note: seller and category will be handled by backend
+      };
+
+      console.log('Sending product data:', productData);
+      await createProduct(productData);
+      
+      // Show success message
+      setSuccessMessage('Sản phẩm đã được tạo thành công!');
+      
+      // Redirect after 2 seconds
+      setTimeout(() => {
+        navigate('/products');
+      }, 2000);
+    } catch (error) {
+      console.error('Error creating product:', error);
+      setSubmitError(error.message || 'Có lỗi xảy ra khi tạo sản phẩm');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getConditionPercentage = (condition) => {
+    switch (condition) {
+      case 'NEW': return 100;
+      case 'LIKE_NEW': return 90;
+      case 'USED': return 70;
+      default: return 100;
+    }
+  };
+
+  return (
+    <div className="add-product-page">
+      <header className="header">
+        <div className="header-content">
+          <div className="logo">
+            <span className="logo-icon">📱</span>
+            <span className="logo-text">MIMI</span>
+          </div>
+          <nav className="nav">
+            <a href="/">Trang chủ</a>
+            <a href="/products">Sản phẩm</a>
+            <a href="/add" className="active">Đăng bán</a>
+          </nav>
+          <div className="user-info">
+            <span>Duy Anh</span>
+            <div className="avatar">👤</div>
+          </div>
+        </div>
+      </header>
+
+      <main className="main-content">
+        <div className="page-header">
+          <h1>Thêm Sản Phẩm Mới</h1>
+          <p className="subtitle">Điền thông tin chi tiết về sản phẩm em bé bạn muốn thêm vào cửa hàng MIMI.</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="product-form">
+          {/* Error Message */}
+          {submitError && (
+            <div className="error-banner">
+              <span className="error-icon">⚠️</span>
+              <span className="error-text">{submitError}</span>
+            </div>
+          )}
+
+          {/* Success Message */}
+          {successMessage && (
+            <div className="success-banner">
+              <span className="success-icon">✅</span>
+              <span className="success-text">{successMessage}</span>
+            </div>
+          )}
+          {/* Thông tin cơ bản sản phẩm */}
+          <section className="form-section">
+            <h2 className="section-title">Thông tin cơ bản sản phẩm</h2>
+            <p className="section-subtitle">Cung cấp tên và thông tin cơ bản về sản phẩm của bạn</p>
+
+            <div className="form-group">
+              <label className="form-label">
+                <span className="required">*</span> Tên sản phẩm
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Ví dụ: Xe đẩy em bé cao cấp"
+                className={`form-input ${errors.name ? 'error' : ''}`}
+                required
+              />
+              {errors.name && <div className="field-error">{errors.name}</div>}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Loại hình</label>
+              <div className="radio-group">
+                <button
+                  type="button"
+                  className={`radio-option ${formData.tradeType === 'BUY_ONLY' ? 'active' : ''}`}
+                  onClick={() => handleTradeTypeChange('BUY_ONLY')}
+                >
+                  <span className="radio-icon">💰</span>
+                  <div>
+                    <div className="radio-title">Bán</div>
+                    <div className="radio-subtitle">Sản phẩm được bán một lần</div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  className={`radio-option ${formData.tradeType === 'RENT_ONLY' ? 'active' : ''}`}
+                  onClick={() => handleTradeTypeChange('RENT_ONLY')}
+                >
+                  <span className="radio-icon">🔄</span>
+                  <div>
+                    <div className="radio-title">Cho thuê</div>
+                    <div className="radio-subtitle">Sản phẩm cho thuê theo thời gian</div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  className={`radio-option ${formData.tradeType === 'BOTH' ? 'active' : ''}`}
+                  onClick={() => handleTradeTypeChange('BOTH')}
+                >
+                  <span className="radio-icon">💎</span>
+                  <div>
+                    <div className="radio-title">Cả hai</div>
+                    <div className="radio-subtitle">Sản phẩm có thể bán hoặc cho thuê</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Điều kiện</label>
+              <div className="condition-group">
+                <button
+                  type="button"
+                  className={`condition-option ${formData.condition === 'NEW' ? 'active' : ''}`}
+                  onClick={() => handleConditionChange('NEW')}
+                >
+                  <span className="condition-icon">✨</span>
+                  <div>
+                    <div className="condition-title">Mới</div>
+                    <div className="condition-subtitle">Sản phẩm hoàn toàn mới</div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  className={`condition-option ${formData.condition === 'LIKE_NEW' ? 'active' : ''}`}
+                  onClick={() => handleConditionChange('LIKE_NEW')}
+                >
+                  <span className="condition-icon">🌟</span>
+                  <div>
+                    <div className="condition-title">Như mới</div>
+                    <div className="condition-subtitle">Sản phẩm đã sử dụng ít</div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  className={`condition-option ${formData.condition === 'USED' ? 'active' : ''}`}
+                  onClick={() => handleConditionChange('USED')}
+                >
+                  <span className="condition-icon">🔧</span>
+                  <div>
+                    <div className="condition-title">Đã sử dụng</div>
+                    <div className="condition-subtitle">Sản phẩm có dấu hiệu sử dụng</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* Hình ảnh sản phẩm */}
+          <section className="form-section">
+            <h2 className="section-title">Hình ảnh sản phẩm</h2>
+            <p className="section-subtitle">Thêm ảnh sản phẩm của bạn. Ảnh đầu tiên sẽ được sử dụng làm ảnh đại diện.</p>
+            
+            <div className="upload-area">
+              <input
+                type="file"
+                id="images"
+                multiple
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="upload-input"
+              />
+              <label htmlFor="images" className="upload-label">
+                <Upload size={48} className="upload-icon" />
+                <div className="upload-text">
+                  <div>Kéo & thả ảnh vào đây hoặc bấm để chọn</div>
+                </div>
+              </label>
+            </div>
+            {formData.images.length > 0 && (
+              <div className="uploaded-files">
+                <p>{formData.images.length} ảnh đã chọn</p>
+              </div>
+            )}
+          </section>
+
+          {/* Chi tiết sản phẩm */}
+          <section className="form-section">
+            <h2 className="section-title">Chi tiết sản phẩm</h2>
+            <p className="section-subtitle">Mô tả và giá sản phẩm của bạn</p>
+
+            <div className="form-group">
+              <label className="form-label">
+                <span className="required">*</span> Mô tả sản phẩm & Tình trạng
+              </label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                placeholder="Ví dụ: Xe đẩy em bé cao cấp với khung nhôm nhẹ, ghế có thể xoay 360°, phù hợp cho bé từ 0-3 tuổi..."
+                className={`form-textarea ${errors.description ? 'error' : ''}`}
+                rows={4}
+                required
+              />
+              {errors.description && <div className="field-error">{errors.description}</div>}
+            </div>
+
+            <div className="price-group">
+              {(formData.tradeType === 'BUY_ONLY' || formData.tradeType === 'BOTH') && (
+                <div className="form-group">
+                  <label className="form-label">
+                    <span className="required">*</span> Giá bán (VNĐ)
+                  </label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    placeholder="Ví dụ: 2500000"
+                    className={`form-input ${errors.price ? 'error' : ''}`}
+                    min="0"
+                  />
+                  {errors.price && <div className="field-error">{errors.price}</div>}
+                </div>
+              )}
+
+              {(formData.tradeType === 'RENT_ONLY' || formData.tradeType === 'BOTH') && (
+                <div className="rent-price-group">
+                  <div className="form-group">
+                    <label className="form-label">
+                      <span className="required">*</span> Giá thuê (VNĐ)
+                    </label>
+                    <input
+                      type="number"
+                      name="rentPrice"
+                      value={formData.rentPrice}
+                      onChange={handleInputChange}
+                      placeholder="Ví dụ: 500000"
+                      className={`form-input ${errors.rentPrice ? 'error' : ''}`}
+                      min="0"
+                    />
+                    {errors.rentPrice && <div className="field-error">{errors.rentPrice}</div>}
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Đơn vị thời gian</label>
+                    <select
+                      name="rentUnit"
+                      value={formData.rentUnit}
+                      onChange={handleInputChange}
+                      className="form-select"
+                    >
+                      <option value="DAY">Ngày</option>
+                      <option value="WEEK">Tuần</option>
+                      <option value="MONTH">Tháng</option>
+                      <option value="YEAR">Năm</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Giấy chứng nhận */}
+          <section className="form-section">
+            <h2 className="section-title">Giấy chứng nhận</h2>
+            <p className="section-subtitle">Tải lên các giấy tờ chứng nhận liên quan đến sản phẩm của bạn</p>
+            
+            <div className="upload-area">
+              <input
+                type="file"
+                id="certificates"
+                multiple
+                accept="image/*,.pdf"
+                onChange={handleCertificateUpload}
+                className="upload-input"
+              />
+              <label htmlFor="certificates" className="upload-label">
+                <Upload size={48} className="upload-icon" />
+                <div className="upload-text">
+                  <div>Kéo & thả tệp vào đây hoặc bấm để chọn</div>
+                </div>
+              </label>
+            </div>
+            {formData.certificates.length > 0 && (
+              <div className="uploaded-files">
+                <p>{formData.certificates.length} tệp đã chọn</p>
+              </div>
+            )}
+          </section>
+
+          {/* Địa chỉ */}
+          <section className="form-section">
+            <h2 className="section-title">Địa chỉ</h2>
+            <p className="section-subtitle">Cho chúng tôi biết vị trí của sản phẩm</p>
+
+            <div className="form-group">
+              <label className="form-label">
+                <span className="required">*</span> Địa chỉ
+              </label>
+              <div className="address-input-group">
+                <MapPin className="address-icon" size={20} />
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  placeholder="Ví dụ: 123 Đường Nguyễn Văn A, Quận 1, TP.HCM"
+                  className={`form-input ${errors.address ? 'error' : ''}`}
+                  required
+                />
+              </div>
+              {errors.address && <div className="field-error">{errors.address}</div>}
+            </div>
+          </section>
+
+          {/* Submit Button */}
+          <div className="form-actions">
+            <button
+              type="submit"
+              className="submit-button"
+              disabled={loading}
+            >
+              {loading ? 'Đang tạo...' : 'Hoàn tất'}
+            </button>
+          </div>
+        </form>
+      </main>
+
+      <nav className="bottom-nav">
+        <a href="/revenue" className="nav-item">
+          <span className="nav-icon">💰</span>
+          <span className="nav-text">Doanh thu</span>
+        </a>
+        <a href="/selling" className="nav-item">
+          <span className="nav-icon">🛒</span>
+          <span className="nav-text">Đang bán</span>
+        </a>
+        <a href="/add" className="nav-item active">
+          <span className="nav-icon">➕</span>
+          <span className="nav-text">Thêm mới</span>
+        </a>
+      </nav>
+    </div>
+  );
+};
+
+export default AddProductPage;

@@ -1,5 +1,6 @@
 package com.mimi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mimi.domain.enums.ProductStatus;
 import com.mimi.domain.enums.RentUnit;
 import com.mimi.domain.enums.TradeType;
@@ -60,16 +61,20 @@ public class Product {
     @Column(name = "address_contact")
     private String addressContact;
     
-    // Relationships
+    // Relationships - Add @JsonIgnore to prevent circular reference
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductImage> images;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductCertificate> certificates;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductVariant> variants;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 }

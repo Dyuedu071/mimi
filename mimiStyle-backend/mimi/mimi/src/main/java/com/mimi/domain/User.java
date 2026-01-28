@@ -1,5 +1,6 @@
 package com.mimi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mimi.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
     
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
     
@@ -53,16 +55,20 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
     
-    // Relationships
+    // Relationships - Add @JsonIgnore to prevent circular reference
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BabyProfile> babyProfiles;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
 }
