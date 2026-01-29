@@ -3,6 +3,7 @@ package com.mimi.service;
 import com.mimi.domain.Category;
 import com.mimi.domain.Product;
 import com.mimi.domain.User;
+import com.mimi.domain.ProductImage;
 import com.mimi.domain.enums.ProductStatus;
 import com.mimi.domain.enums.RentUnit;
 import com.mimi.domain.enums.Role;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,7 @@ public class DataInitializationService {
         // Create default user if not exists
         if (userRepository.count() == 0) {
             User defaultUser = new User();
+            defaultUser.setUsername("admin");
             defaultUser.setFullName("Admin User");
             defaultUser.setEmail("admin@mimi.com");
             defaultUser.setPassword("$2a$10$dummy.hash.for.demo"); // Dummy hash
@@ -74,6 +78,12 @@ public class DataInitializationService {
             product1.setIsNew(true);
             product1.setSeller(defaultUser);
             product1.setCategory(toyCategory);
+            // Images
+            List<ProductImage> images1 = new ArrayList<>();
+            images1.add(new ProductImage(null, product1,
+                    "src/assets/img-product/may-tiet-trung-binh-sua-co-say-kho-bang-tia-uv-spectra-1.jpg",
+                    true));
+            product1.setImages(images1);
             productRepository.save(product1);
 
             Product product2 = new Product();
@@ -90,6 +100,11 @@ public class DataInitializationService {
             product2.setIsNew(false);
             product2.setSeller(defaultUser);
             product2.setCategory(toyCategory);
+            List<ProductImage> images2 = new ArrayList<>();
+            images2.add(new ProductImage(null, product2,
+                    "src/assets/img-product/May-hut-sua-dien-doi-Resonance-3-Fb1160VN-3.jpeg",
+                    true));
+            product2.setImages(images2);
             productRepository.save(product2);
 
             Product product3 = new Product();
@@ -106,6 +121,11 @@ public class DataInitializationService {
             product3.setIsNew(false);
             product3.setSeller(defaultUser);
             product3.setCategory(cribCategory);
+            List<ProductImage> images3 = new ArrayList<>();
+            images3.add(new ProductImage(null, product3,
+                    "src/assets/img-product/top-5-thuong-hieu-noi-cho-be-duoc-ua-chuong-nhat-hien-nay-2020-1595675197.png",
+                    true));
+            product3.setImages(images3);
             productRepository.save(product3);
 
             // New products
@@ -123,6 +143,11 @@ public class DataInitializationService {
             product4.setIsNew(true);
             product4.setSeller(defaultUser);
             product4.setCategory(strollerCategory);
+            List<ProductImage> images4 = new ArrayList<>();
+            images4.add(new ProductImage(null, product4,
+                    "src/assets/img-product/xe-day-tre-em-joie-versatrax-lagoon.jpg",
+                    true));
+            product4.setImages(images4);
             productRepository.save(product4);
 
             Product product5 = new Product();
@@ -139,6 +164,11 @@ public class DataInitializationService {
             product5.setIsNew(true);
             product5.setSeller(defaultUser);
             product5.setCategory(chairCategory);
+            List<ProductImage> images5 = new ArrayList<>();
+            images5.add(new ProductImage(null, product5,
+                    "src/assets/img-product/ghe-an-dam-umoo-1606186868.jpg",
+                    true));
+            product5.setImages(images5);
             productRepository.save(product5);
 
             Product product6 = new Product();
@@ -155,6 +185,11 @@ public class DataInitializationService {
             product6.setIsNew(true);
             product6.setSeller(defaultUser);
             product6.setCategory(toyCategory);
+            List<ProductImage> images6 = new ArrayList<>();
+            images6.add(new ProductImage(null, product6,
+                    "src/assets/img-product/z6021933351086_28eb8d7e91cc13e47c6e338d1bea00f3.jpg",
+                    true));
+            product6.setImages(images6);
             productRepository.save(product6);
         }
     }

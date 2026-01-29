@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { getUserProducts, deleteProduct } from '../api/product';
+import sterilizerImg from '../assets/img-product/may-tiet-trung-binh-sua-co-say-kho-bang-tia-uv-spectra-1.jpg';
+import pumpImg from '../assets/img-product/May-hut-sua-dien-doi-Resonance-3-Fb1160VN-3.jpeg';
+import cribImg from '../assets/img-product/top-5-thuong-hieu-noi-cho-be-duoc-ua-chuong-nhat-hien-nay-2020-1595675197.png';
+import strollerImg from '../assets/img-product/xe-day-tre-em-joie-versatrax-lagoon.jpg';
+import chairImg from '../assets/img-product/ghe-an-dam-umoo-1606186868.jpg';
+import toyImg from '../assets/img-product/z6021933351086_28eb8d7e91cc13e47c6e338d1bea00f3.jpg';
 import '../styles/ProductManagementPage.css';
 
 const ProductManagementPage = () => {
@@ -100,6 +106,33 @@ const ProductManagementPage = () => {
     }
   };
 
+  const imageMap = {
+    'Máy tiệt trùng bình sữa UV': sterilizerImg,
+    'Máy hút sữa điện tử thông minh': pumpImg,
+    'Nôi em bé thông minh': cribImg,
+    'Xe đẩy em bé cao cấp': strollerImg,
+    'Ghế ăn dặm cho bé': chairImg,
+    'Bộ đồ chơi giáo dục': toyImg,
+  };
+
+  const getProductImageSrc = (product) => {
+    // Ưu tiên map theo tên sản phẩm (dữ liệu mẫu)
+    if (imageMap[product.name]) return imageMap[product.name];
+
+    // Nếu API trả về images là mảng URL string
+    if (Array.isArray(product.images) && typeof product.images[0] === 'string') {
+      return product.images[0];
+    }
+
+    // Nếu API trả về mảng object { imageUrl }
+    if (Array.isArray(product.images) && product.images[0]?.imageUrl) {
+      return product.images[0].imageUrl;
+    }
+
+    // Fallback
+    return '/api/placeholder/300/200';
+  };
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
   };
@@ -111,7 +144,7 @@ const ProductManagementPage = () => {
       'SOLD_OUT': { text: 'Hết hàng', class: 'status-sold' }
     };
     const statusInfo = statusMap[status] || { text: 'Không xác định', class: 'status-unknown' };
-    return <span className={`status-badge ${statusInfo.class}`}>{statusInfo.text}</span>;
+    return <span className={`product-status-badge ${statusInfo.class}`}>{statusInfo.text}</span>;
   };
 
   const getRentUnitText = (unit) => {
@@ -137,15 +170,23 @@ const ProductManagementPage = () => {
         <div className="products-grid">
           {products.map(product => (
             <div key={product.id} className="product-card">
-              <div className="product-image">
-                <img src={product.images?.[0] || '/api/placeholder/300/200'} alt={product.name} />
-                {getStatusBadge(product.status)}
-              </div>
-              
-              <div className="product-info">
-                <h3 className="product-name">{product.name}</h3>
+              <div className="product-card-inner">
+                <div className="product-thumb">
+                  <img src={getProductImageSrc(product)} alt={product.name} />
+                </div>
+
+                <div className="product-info">
+                  <div className="product-meta-row">
+                    {/* TODO: thay bằng tên thể loại từ API nếu có */}
+                    <span className="product-category-pill">
+                      {product.categoryName || product.category?.name || 'Danh mục khác'}
+                    </span>
+                    {getStatusBadge(product.status)}
+                  </div>
+
+                  <h3 className="product-name">{product.name}</h3>
                 
-                <div className="product-price">
+                  <div className="product-price">
                   {product.tradeType === 'BUY_ONLY' && product.buyPrice && (
                     <span className="sell-price">{formatPrice(product.buyPrice)}</span>
                   )}
@@ -166,16 +207,17 @@ const ProductManagementPage = () => {
                   )}
                 </div>
 
-                <div className="product-actions">
-                  <button className="btn-edit">
-                    ✏️ Chỉnh sửa
-                  </button>
-                  <button 
-                    className="btn-delete"
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    🗑️ Xóa
-                  </button>
+                  <div className="product-actions">
+                    <button className="btn-edit">
+                      ✏️ Chỉnh sửa
+                    </button>
+                    <button 
+                      className="btn-delete"
+                      onClick={() => handleDelete(product.id)}
+                    >
+                      🗑️ Xóa
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -192,11 +192,11 @@
   gap: 1rem;
 }
 
-.input-group {
+.login-input-group {
   position: relative;
 }
 
-.input-icon {
+.login-input-icon {
   position: absolute;
   left: 0.95rem;
   top: 50%;
@@ -208,7 +208,7 @@
   pointer-events: none;
 }
 
-.form-input {
+.login-form-input {
   width: 100%;
   padding: 0.95rem 1rem 0.95rem 2.65rem;
   border: 1px solid #e5e7eb;
@@ -219,21 +219,21 @@
   background: white;
 }
 
-.form-input:focus {
+.login-form-input:focus {
   outline: none;
   border-color: #f472b6;
   box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.1);
 }
 
-.form-input::placeholder {
+.login-form-input::placeholder {
   color: #9ca3af;
 }
 
-.password-input {
+.login-password-input {
   padding-right: 3rem;
 }
 
-.password-toggle {
+.login-password-toggle {
   position: absolute;
   right: 1rem;
   top: 50%;

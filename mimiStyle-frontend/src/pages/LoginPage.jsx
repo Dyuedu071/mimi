@@ -143,8 +143,8 @@ export default function LoginPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="login-form">
-                <div className="input-group">
-                  <span className="input-icon" aria-hidden="true">
+                <div className="login-input-group">
+                  <span className="login-input-icon" aria-hidden="true">
                     <Mail size={16} />
                   </span>
                   <input
@@ -153,13 +153,13 @@ export default function LoginPage() {
                     placeholder="email@example.com"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="form-input"
+                    className="login-form-input"
                     required
                   />
                 </div>
 
-                <div className="input-group">
-                  <span className="input-icon" aria-hidden="true">
+                <div className="login-input-group">
+                  <span className="login-input-icon" aria-hidden="true">
                     <Lock size={16} />
                   </span>
                   <input
@@ -168,13 +168,13 @@ export default function LoginPage() {
                     placeholder="Nhập mật khẩu của bạn"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="form-input password-input"
+                    className="login-form-input login-password-input"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="password-toggle"
+                    className="login-password-toggle"
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
