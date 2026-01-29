@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { getAllProducts } from '../api/product';
+import sterilizerImg from '../assets/img-product/may-tiet-trung-binh-sua-co-say-kho-bang-tia-uv-spectra-1.jpg';
+import pumpImg from '../assets/img-product/May-hut-sua-dien-doi-Resonance-3-Fb1160VN-3.jpeg';
+import cribImg from '../assets/img-product/top-5-thuong-hieu-noi-cho-be-duoc-ua-chuong-nhat-hien-nay-2020-1595675197.png';
+import strollerImg from '../assets/img-product/xe-day-tre-em-joie-versatrax-lagoon.jpg';
+import chairImg from '../assets/img-product/ghe-an-dam-umoo-1606186868.jpg';
+import toyImg from '../assets/img-product/z6021933351086_28eb8d7e91cc13e47c6e338d1bea00f3.jpg';
 import '../styles/HomePage.css';
 
 export default function HomePage() {
@@ -13,6 +19,15 @@ export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [newProducts, setNewProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const imageMap = {
+    'Máy tiệt trùng bình sữa UV': sterilizerImg,
+    'Máy hút sữa điện tử thông minh': pumpImg,
+    'Nôi em bé thông minh': cribImg,
+    'Xe đẩy em bé cao cấp': strollerImg,
+    'Ghế ăn dặm cho bé': chairImg,
+    'Bộ đồ chơi giáo dục': toyImg,
+  };
 
   useEffect(() => {
     const savedUser = sessionStorage.getItem('user');
@@ -67,37 +82,75 @@ export default function HomePage() {
     }).format(price);
   };
 
+  const getProductImageSrc = (product) => {
+    if (imageMap[product.name]) return imageMap[product.name];
+
+    if (Array.isArray(product.images) && typeof product.images[0] === 'string') {
+      return product.images[0];
+    }
+
+    if (Array.isArray(product.images) && product.images[0]?.imageUrl) {
+      return product.images[0].imageUrl;
+    }
+
+    return 'https://via.placeholder.com/120x120/f0f0f0/666?text=Product';
+  };
+
+  const getStatusBadge = (status) => {
+    const statusMap = {
+      ACTIVE: { text: 'Đang bán', class: 'status-available' },
+      HIDDEN: { text: 'Ẩn', class: 'status-hidden' },
+      SOLD_OUT: { text: 'Hết hàng', class: 'status-sold' },
+    };
+    const info = statusMap[status] || { text: 'Không xác định', class: 'status-unknown' };
+    return <span className={`product-status-badge ${info.class}`}>{info.text}</span>;
+  };
+
   const ProductCard = ({ product }) => (
     <div className="product-card">
-      <div className="product-image">
-        <img src="https://via.placeholder.com/300x200/f0f0f0/666?text=Product+Image" alt={product.name} />
-        <button className="product-favorite">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-        </button>
-        {product.featured && <span className="product-badge featured">Nổi bật</span>}
-        {product.isNew && <span className="product-badge new">Mới</span>}
-      </div>
-      <div className="product-info">
-        <h3 className="product-name">{product.name}</h3>
-        <div className="product-prices">
-          {(product.tradeType === 'BOTH' || product.tradeType === 'BUY_ONLY') && product.buyPrice ? (
-            <div className="price-main">{formatPrice(product.buyPrice)}</div>
-          ) : null}
-          {(product.tradeType === 'BOTH' || product.tradeType === 'RENT_ONLY') && product.rentPrice ? (
-            <div className="price-rent">{formatPrice(product.rentPrice)}/{product.rentUnit === 'MONTH' ? 'tháng' : product.rentUnit === 'WEEK' ? 'tuần' : 'ngày'}</div>
-          ) : null}
+      <div className="product-card-inner">
+        <div className="product-thumb">
+          <img src={getProductImageSrc(product)} alt={product.name} />
+          <button className="product-favorite">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
         </div>
-        <div className="product-actions">
-          {(product.tradeType === 'BOTH' || product.tradeType === 'BUY_ONLY') && product.buyPrice ? (
-            <button className="btn-buy">Có Bán</button>
-          ) : null}
-          {(product.tradeType === 'BOTH' || product.tradeType === 'RENT_ONLY') && product.rentPrice ? (
-            <button className="btn-rent">Có Thuê</button>
-          ) : null}
+
+        <div className="product-info">
+          <div className="product-meta-row">
+            <span className="product-category-pill">
+              {product.categoryName || product.category?.name || 'Danh mục khác'}
+            </span>
+            {getStatusBadge(product.status)}
+          </div>
+
+          <h3 className="product-name">{product.name}</h3>
+
+          <div className="product-prices">
+            {(product.tradeType === 'BOTH' || product.tradeType === 'BUY_ONLY') && product.buyPrice ? (
+              <div className="price-main">{formatPrice(product.buyPrice)}</div>
+            ) : null}
+            {(product.tradeType === 'BOTH' || product.tradeType === 'RENT_ONLY') && product.rentPrice ? (
+              <div className="price-rent">
+                {formatPrice(product.rentPrice)}/
+                {product.rentUnit === 'MONTH' ? 'tháng' : product.rentUnit === 'WEEK' ? 'tuần' : 'ngày'}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="product-actions">
+            {(product.tradeType === 'BOTH' || product.tradeType === 'BUY_ONLY') && product.buyPrice ? (
+              <button className="btn-buy">Có Bán</button>
+            ) : null}
+            {(product.tradeType === 'BOTH' || product.tradeType === 'RENT_ONLY') && product.rentPrice ? (
+              <button className="btn-rent">Có Thuê</button>
+            ) : null}
+          </div>
+
+          <button className="btn-details">Xem Chi Tiết</button>
         </div>
-        <button className="btn-details">Xem Chi Tiết</button>
       </div>
     </div>
   );

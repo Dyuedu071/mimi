@@ -233,14 +233,23 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.product-image {
+.product-card-inner {
+  display: flex;
+  padding: 16px;
+}
+
+.product-thumb {
   position: relative;
-  height: 200px;
+  flex-shrink: 0;
+  width: 90px;
+  height: 90px;
+  border-radius: 18px;
   overflow: hidden;
+  margin-right: 16px;
   background: #f8f9fa;
 }
 
-.product-image img {
+.product-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -248,13 +257,13 @@
 
 .product-favorite {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
   background: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -266,39 +275,79 @@
 .product-favorite:hover {
   background: white;
   color: #e91e63;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .product-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 4px 8px;
-  border-radius: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 .product-badge.featured {
-  background: #fbbf24;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   color: #92400e;
+  border: 1px solid rgba(146, 64, 14, 0.2);
 }
 
 .product-badge.new {
-  background: #34d399;
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
   color: #065f46;
+  border: 1px solid rgba(6, 95, 70, 0.2);
 }
 
 .product-info {
-  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-category-pill {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.product-status-badge {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.product-status-badge.status-available {
+  background: #10b981;
+}
+
+.product-status-badge.status-hidden {
+  background: #f59e0b;
+}
+
+.product-status-badge.status-sold {
+  background: #6b7280;
 }
 
 .product-name {
   font-size: 1rem;
   font-weight: 600;
   color: #1f2937;
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -307,14 +356,14 @@
 }
 
 .product-prices {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .price-main {
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: #7c3aed;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .price-rent {
