@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import ProductManagementPage from './pages/ProductManagementPage';
+import ProductDetailPage from './pages/ProductDetailPage';
 import AddProductPage from './pages/AddProductPage';
 import RevenuePage from './pages/RevenuePage';
 import ProfilePage from './pages/ProfilePage';
@@ -30,6 +31,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ProductManagementPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/product/:id"
+          element={
+            <ProtectedRoute>
+              <ProductDetailPage />
             </ProtectedRoute>
           }
         />

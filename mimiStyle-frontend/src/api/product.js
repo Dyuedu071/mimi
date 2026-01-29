@@ -125,6 +125,21 @@ export async function getAllProducts() {
   return response.json();
 }
 
+export async function getProductById(id) {
+  const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Không thể tải chi tiết sản phẩm');
+  }
+
+  return response.json();
+}
+
 export async function saveProductImageNames(productId, filenames) {
   const response = await fetch(`${API_BASE_URL}/products/${productId}/images`, {
     method: 'POST',

@@ -284,12 +284,10 @@ const ProductManagementPage = () => {
     // Ưu tiên ảnh từ database (tên file trong public/img-product/)
     if (Array.isArray(product.images) && product.images.length > 0) {
       const imageUrl = product.images[0];
-      if (typeof imageUrl === 'string') {
-        // Tên file từ database, load từ /img-product/
+      if (typeof imageUrl === 'string' && !imageUrl.includes('src/assets')) {
         return `/img-product/${imageUrl}`;
       }
-      // Nếu là object có imageUrl
-      if (imageUrl?.imageUrl) {
+      if (imageUrl?.imageUrl && !imageUrl.imageUrl.includes('src/assets')) {
         return `/img-product/${imageUrl.imageUrl}`;
       }
     }

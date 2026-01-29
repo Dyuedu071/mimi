@@ -87,12 +87,12 @@ export default function HomePage() {
     // Ưu tiên ảnh từ database (tên file trong public/img-product/)
     if (Array.isArray(product.images) && product.images.length > 0) {
       const imageUrl = product.images[0];
-      if (typeof imageUrl === 'string') {
+      if (typeof imageUrl === 'string' && !imageUrl.includes('src/assets')) {
         // Tên file từ database, load từ /img-product/
         return `/img-product/${imageUrl}`;
       }
       // Nếu là object có imageUrl
-      if (imageUrl?.imageUrl) {
+      if (imageUrl?.imageUrl && !imageUrl.imageUrl.includes('src/assets')) {
         return `/img-product/${imageUrl.imageUrl}`;
       }
     }
@@ -157,7 +157,9 @@ export default function HomePage() {
             ) : null}
           </div>
 
-          <button className="btn-details">Xem Chi Tiết</button>
+          <button className="btn-details" onClick={() => navigate(`/product/${product.id}`)}>
+            Xem Chi Tiết
+          </button>
         </div>
       </div>
     </div>
