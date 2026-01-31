@@ -20,4 +20,9 @@ public class SoldProductResponse {
     private String category;
     private Long orderId;
     private String orderStatus;
+    /** Thông tin giao hàng / khách hàng (theo đơn) */
+    private String shippingName;
+    private String shippingPhone;
+    private String shippingAddress;
+    private String note;
 }

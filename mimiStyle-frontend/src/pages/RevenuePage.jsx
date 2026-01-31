@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PackageCheck } from 'lucide-react';
+import { PackageCheck, Truck, User, ChevronDown, ChevronUp } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { getRevenueSummary, getSoldProducts } from '../api/revenue';
 import { updateOrderStatus } from '../api/order';
@@ -29,6 +29,10 @@ function groupSoldProductsByOrder(soldProducts) {
         soldDate: p.soldDate,
         items: [],
         orderTotal: 0,
+        shippingName: p.shippingName ?? p.shipping_name ?? '',
+        shippingPhone: p.shippingPhone ?? p.shipping_phone ?? '',
+        shippingAddress: p.shippingAddress ?? p.shipping_address ?? '',
+        note: p.note ?? '',
       });
     }
     const order = byOrder.get(orderId);
@@ -56,6 +60,7 @@ const RevenuePage = () => {
   const [revenueSummary, setRevenueSummary] = useState(null);
   const [soldProducts, setSoldProducts] = useState([]);
   const [confirmingOrderId, setConfirmingOrderId] = useState(null);
+  const [expandedOrderId, setExpandedOrderId] = useState(null);
   // Tạm thời không dùng lọc — list tất cả đơn hàng đã bán
 
   useEffect(() => {
@@ -143,9 +148,28 @@ const RevenuePage = () => {
     if (s === 'PENDING') return 'Chờ xử lý';
     if (s === 'CONFIRMED') return 'Đã xác nhận';
     if (s === 'SHIPPING') return 'Đang vận chuyển';
-    if (s === 'COMPLETED') return 'Đã giao';
+    if (s === 'COMPLETED') return 'Giao hàng thành công';
     if (s === 'CANCELLED') return 'Đã hủy';
     return status || '—';
+  };
+
+  const handleConfirmDelivered = async (orderId) => {
+    if (!orderId) return;
+    const ok = window.confirm('Xác nhận đơn hàng đã giao thành công? Trạng thái sẽ chuyển sang "Giao hàng thành công".');
+    if (!ok) return;
+    try {
+      setConfirmingOrderId(orderId);
+      await updateOrderStatus(orderId, 'COMPLETED');
+      setSoldProducts((prev) =>
+        prev.map((p) =>
+          p.orderId === orderId ? { ...p, orderStatus: 'COMPLETED' } : p
+        )
+      );
+    } catch (err) {
+      alert(err?.message || 'Không thể cập nhật trạng thái đơn hàng');
+    } finally {
+      setConfirmingOrderId(null);
+    }
   };
 
   const summary = revenueSummary ?? { totalRevenue: 0, totalProductsSold: 0, period: '' };
@@ -188,7 +212,9 @@ const RevenuePage = () => {
               <div className="revenue-orders-list">
                 {ordersBySeller.length > 0 ? (
                   ordersBySeller.map((order) => {
-                    const isPending = (order.orderStatus || '').toUpperCase() === 'PENDING';
+                    const statusUpper = (order.orderStatus || '').toUpperCase();
+                    const isPending = statusUpper === 'PENDING';
+                    const isShipping = statusUpper === 'SHIPPING';
                     return (
                       <div key={order.orderId} className="revenue-order-card">
                         <div className="revenue-order-header">
@@ -197,6 +223,18 @@ const RevenuePage = () => {
                           <span className={`revenue-order-status-badge status-${(order.orderStatus || '').toLowerCase()}`}>
                             {getStatusLabel(order.orderStatus)}
                           </span>
+                          <button
+                            type="button"
+                            className="revenue-view-detail-btn"
+                            onClick={() => setExpandedOrderId((id) => (id === order.orderId ? null : order.orderId))}
+                            aria-expanded={expandedOrderId === order.orderId}
+                          >
+                            {expandedOrderId === order.orderId ? (
+                              <>Thu gọn <ChevronUp size={16} /></>
+                            ) : (
+                              <>Xem chi tiết <ChevronDown size={16} /></>
+                            )}
+                          </button>
                         </div>
                         <div className="revenue-order-products">
                           <div className="revenue-order-table-header">
@@ -236,11 +274,50 @@ const RevenuePage = () => {
                                 <span>Xác nhận đơn hàng</span>
                               </button>
                             )}
-                            {!isPending && (
+                            {isShipping && (
+                              <button
+                                type="button"
+                                className="revenue-confirm-delivered-btn"
+                                onClick={() => handleConfirmDelivered(order.orderId)}
+                                disabled={confirmingOrderId === order.orderId}
+                              >
+                                <Truck size={16} />
+                                <span>Xác nhận đơn hàng đã giao thành công</span>
+                              </button>
+                            )}
+                            {!isPending && !isShipping && (
                               <span className="revenue-order-status-text">{getStatusLabel(order.orderStatus)}</span>
                             )}
                           </div>
                         </div>
+                        {expandedOrderId === order.orderId && (
+                          <div className="revenue-order-customer">
+                            <h4 className="revenue-order-customer-title">
+                              <User size={18} />
+                              Thông tin khách hàng
+                            </h4>
+                            <dl className="revenue-order-customer-list">
+                              <div className="revenue-order-customer-row">
+                                <dt>Họ tên</dt>
+                                <dd>{order.shippingName || '—'}</dd>
+                              </div>
+                              <div className="revenue-order-customer-row">
+                                <dt>Số điện thoại</dt>
+                                <dd>{order.shippingPhone || '—'}</dd>
+                              </div>
+                              <div className="revenue-order-customer-row">
+                                <dt>Địa chỉ giao hàng</dt>
+                                <dd>{order.shippingAddress || '—'}</dd>
+                              </div>
+                              {(order.note != null && order.note !== '') && (
+                                <div className="revenue-order-customer-row">
+                                  <dt>Ghi chú</dt>
+                                  <dd>{order.note}</dd>
+                                </div>
+                              )}
+                            </dl>
+                          </div>
+                        )}
                       </div>
                     );
                   })

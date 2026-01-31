@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     
-    @Query("SELECT oi FROM OrderItem oi " +
-           "JOIN oi.order o " +
+    @Query("SELECT DISTINCT oi FROM OrderItem oi " +
+           "JOIN FETCH oi.order o " +
            "JOIN oi.product p " +
            "WHERE p.seller.id = :sellerId " +
            "AND o.status IN ('PENDING', 'CONFIRMED', 'SHIPPING', 'COMPLETED') " +
@@ -25,8 +25,8 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
                                          @Param("endDate") LocalDateTime endDate);
 
     /** Lấy tất cả order items là sản phẩm của seller (không lọc ngày). */
-    @Query("SELECT oi FROM OrderItem oi " +
-           "JOIN oi.order o " +
+    @Query("SELECT DISTINCT oi FROM OrderItem oi " +
+           "JOIN FETCH oi.order o " +
            "JOIN oi.product p " +
            "WHERE p.seller.id = :sellerId " +
            "AND o.status IN ('PENDING', 'CONFIRMED', 'SHIPPING', 'COMPLETED') " +

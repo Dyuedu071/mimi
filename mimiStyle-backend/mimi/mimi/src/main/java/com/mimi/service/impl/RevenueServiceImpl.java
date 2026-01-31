@@ -82,16 +82,21 @@ public class RevenueServiceImpl implements RevenueService {
             
         BigDecimal totalAmount = orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity()));
         
+        var order = orderItem.getOrder();
         return new SoldProductResponse(
             orderItem.getProduct().getId(),
             orderItem.getProduct().getName(),
             imageUrl,
             orderItem.getQuantity(),
             totalAmount,
-            orderItem.getOrder().getCreatedAt().toLocalDate(),
+            order.getCreatedAt().toLocalDate(),
             categoryName,
-            orderItem.getOrder().getId(),
-            orderItem.getOrder().getStatus() != null ? orderItem.getOrder().getStatus().name() : "PENDING"
+            order.getId(),
+            order.getStatus() != null ? order.getStatus().name() : "PENDING",
+            order.getShippingName() != null ? order.getShippingName() : "",
+            order.getShippingPhone() != null ? order.getShippingPhone() : "",
+            order.getShippingAddress() != null ? order.getShippingAddress() : "",
+            order.getNote() != null ? order.getNote() : ""
         );
     }
     
