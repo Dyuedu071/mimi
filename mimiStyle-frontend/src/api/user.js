@@ -11,6 +11,18 @@ async function parseResponse(res) {
   return { data, text };
 }
 
+/**
+ * Lấy danh sách tất cả user (dành cho ADMIN).
+ */
+export async function getAllUsers() {
+  const res = await fetch(`${API_BASE_URL}/users/list`);
+  const { data } = await parseResponse(res);
+  if (!res.ok) {
+    throw new Error(typeof data === 'string' ? data : 'Không thể tải danh sách user');
+  }
+  return Array.isArray(data) ? data : [];
+}
+
 export async function getUserById(id) {
   const res = await fetch(`${API_BASE_URL}/users/${id}`);
   const { data, text } = await parseResponse(res);

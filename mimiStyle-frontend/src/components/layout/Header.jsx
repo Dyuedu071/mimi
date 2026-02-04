@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Users, ShoppingCart, Package, Settings, LogOut, ChevronRight, Minus, Plus, History } from 'lucide-react';
+import { Users, ShoppingCart, Package, Settings, LogOut, ChevronRight, Minus, Plus, History, UserCog } from 'lucide-react';
 import '../../styles/Header.css';
 import { API_ORIGIN } from '../../api/config';
 import { useCart } from '../../context/CartContext';
@@ -99,13 +99,6 @@ export default function Header() {
             onClick={() => navigate('/home')}
           >
             Trang Chủ
-          </button>
-          <button
-            type="button"
-            className={`app-nav-link ${pathname.startsWith('/products') ? 'active' : ''}`}
-            onClick={() => navigate('/products')}
-          >
-            Quản lý sản phẩm
           </button>
           <button className="app-nav-link" type="button">
             Giới Thiệu
@@ -262,9 +255,24 @@ export default function Header() {
                   }}
                 >
                   <Package className="app-dropdown-icon" size={20} />
-                  <span>Sản phẩm đăng bán</span>
+                  <span>Quản lý sản phẩm</span>
                   <ChevronRight className="app-dropdown-chevron" size={16} />
                 </button>
+                {/* Tạm ẩn Quản lý user
+                {user?.role === 'ADMIN' && (
+                <button 
+                  className="app-dropdown-item"
+                  onClick={() => {
+                    navigate('/users');
+                    setShowDropdown(false);
+                  }}
+                >
+                  <UserCog className="app-dropdown-icon" size={20} />
+                  <span>Quản lý user</span>
+                  <ChevronRight className="app-dropdown-chevron" size={16} />
+                </button>
+                )}
+                */}
                 <button 
                   className="app-dropdown-item"
                   onClick={() => {

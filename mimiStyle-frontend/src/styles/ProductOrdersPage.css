@@ -1,0 +1,35 @@
+.product-orders-page {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.product-orders-loading {
+  padding: 48px;
+  text-align: center;
+  color: #64748b;
+}
+
+.product-orders-header {
+  margin-bottom: 24px;
+}
+
+.product-orders-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 6px 0;
+}
+
+.product-orders-subtitle {
+  color: #64748b;
+  font-size: 15px;
+  margin: 0;
+}
+
+.product-orders-page .revenue-orders-list {
+  margin-top: 0;
+}
+
+.product-orders-page .revenue-order-card {
+  margin-bottom: 20px;
+}

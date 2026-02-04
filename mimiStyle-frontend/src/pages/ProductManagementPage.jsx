@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Upload, X } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Upload, X, Plus } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { getUserProducts, deleteProduct, updateProduct, uploadProductImages, saveProductImageNames, deleteProductImage } from '../api/product';
 import { API_ORIGIN } from '../api/config';
@@ -14,6 +14,8 @@ import '../styles/ProductManagementPage.css';
 
 const ProductManagementPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isInsideProductsLayout = location.pathname.startsWith('/products');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -383,12 +385,22 @@ const ProductManagementPage = () => {
   ) : (
     <>
       <main className="main-content">
-        <div className="page-header">
-          <h1>Quản lý sản phẩm</h1>
-          <p className="subtitle">Sản phẩm đang bán/cho thuê</p>
+        <div className="page-header page-header-with-action">
+          <div>
+            <h1>Quản lý sản phẩm</h1>
+            <p className="subtitle">Sản phẩm đang bán/cho thuê</p>
+          </div>
+          <button
+            type="button"
+            className="btn-add-new-product"
+            onClick={() => navigate('/products/add')}
+          >
+            <Plus size={18} />
+            <span>Thêm mới</span>
+          </button>
         </div>
 
-        <div className="product-management-filters" style={{ marginLeft: '78px' }}>
+        <div className="product-management-filters" style={{ marginLeft: isInsideProductsLayout ? 0 : '78px' }}>
           <button
             type="button"
             className={`product-management-filter-btn ${filterType === 'all' ? 'active' : ''}`}
@@ -472,16 +484,9 @@ const ProductManagementPage = () => {
           ))}
         </div>
 
-        <div className="add-product-section">
-          <button 
-            className="btn-add-product"
-            onClick={() => navigate('/add')}
-          >
-            + Tải thêm sản phẩm
-          </button>
-        </div>
       </main>
 
+      {!isInsideProductsLayout && (
       <nav className="bottom-nav">
         <a href="/revenue" className="nav-item">
           <span className="nav-icon">💰</span>
@@ -496,6 +501,7 @@ const ProductManagementPage = () => {
           <span className="nav-text">Thêm mới</span>
         </a>
       </nav>
+      )}
 
       {/* Edit Product Modal */}
       {isEditing && (
@@ -841,13 +847,16 @@ const ProductManagementPage = () => {
     </>
   );
 
-  return (
-    <Layout>
-      <div className="product-management">
-        {content}
-      </div>
-    </Layout>
+  const wrapper = (
+    <div className="product-management">
+      {content}
+    </div>
   );
+
+  if (isInsideProductsLayout) {
+    return wrapper;
+  }
+  return <Layout>{wrapper}</Layout>;
 };
 
 export default ProductManagementPage;

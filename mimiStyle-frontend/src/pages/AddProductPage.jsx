@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Upload, MapPin, X } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { createProduct, saveProductImageNames, uploadProductImages } from '../api/product';
@@ -7,6 +7,8 @@ import '../styles/AddProductPage.css';
 
 const AddProductPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isInsideProductsLayout = location.pathname.startsWith('/products');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState('');
@@ -507,31 +509,37 @@ const AddProductPage = () => {
           </div>
         </form>
       </main>
-
-      <nav className="bottom-nav">
-        <a href="/revenue" className="nav-item">
-          <span className="nav-icon">💰</span>
-          <span className="nav-text">Doanh thu</span>
-        </a>
-        <a href="/products" className="nav-item">
-          <span className="nav-icon">🛒</span>
-          <span className="nav-text">Đang bán</span>
-        </a>
-        <a href="/add" className="nav-item active">
-          <span className="nav-icon">➕</span>
-          <span className="nav-text">Thêm mới</span>
-        </a>
-      </nav>
     </>
   );
 
-  return (
-    <Layout>
-      <div className="add-product-page">
-        {content}
-      </div>
-    </Layout>
+  const bottomNav = (
+    <nav className="bottom-nav">
+      <a href="/revenue" className="nav-item">
+        <span className="nav-icon">💰</span>
+        <span className="nav-text">Doanh thu</span>
+      </a>
+      <a href="/products" className="nav-item">
+        <span className="nav-icon">🛒</span>
+        <span className="nav-text">Đang bán</span>
+      </a>
+      <a href="/add" className="nav-item active">
+        <span className="nav-icon">➕</span>
+        <span className="nav-text">Thêm mới</span>
+      </a>
+    </nav>
   );
+
+  const wrapper = (
+    <div className="add-product-page">
+      {content}
+      {!isInsideProductsLayout && bottomNav}
+    </div>
+  );
+
+  if (isInsideProductsLayout) {
+    return wrapper;
+  }
+  return <Layout>{wrapper}</Layout>;
 };
 
 export default AddProductPage;

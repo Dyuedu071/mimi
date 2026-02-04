@@ -1,0 +1,132 @@
+.product-dashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.product-dashboard-loading {
+  padding: 48px;
+  text-align: center;
+  color: #64748b;
+}
+
+.product-dashboard-header {
+  margin-bottom: 28px;
+}
+
+.product-dashboard-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 6px 0;
+}
+
+.product-dashboard-subtitle {
+  color: #64748b;
+  font-size: 15px;
+  margin: 0;
+}
+
+.product-dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.product-dashboard-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+.product-dashboard-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.product-dashboard-card-icon.sale {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.product-dashboard-card-icon.rent {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.product-dashboard-card-icon.revenue {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.product-dashboard-card-icon.orders {
+  background: #e9d5ff;
+  color: #7c3aed;
+}
+
+.product-dashboard-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.product-dashboard-card-label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.product-dashboard-card-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.product-dashboard-chart-card {
+  margin-top: 28px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+.product-dashboard-chart-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+}
+
+.product-dashboard-chart-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 16px 0;
+}
+
+.product-dashboard-chart-wrap {
+  width: 100%;
+  min-height: 280px;
+}
+
+.product-dashboard-extra {
+  margin-top: 24px;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.product-dashboard-extra strong {
+  color: #1e293b;
+}

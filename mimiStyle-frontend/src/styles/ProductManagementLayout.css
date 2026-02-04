@@ -1,0 +1,68 @@
+/* Chiều cao header (phải trùng với header thực tế) */
+:root {
+  --pm-header-height: 64px;
+  --pm-sidebar-width: 260px;
+}
+
+.product-management-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  background: #f5f5f5;
+}
+
+.product-management-sidebar {
+  position: fixed;
+  left: 0;
+  top: var(--pm-header-height);
+  bottom: 0;
+  width: var(--pm-sidebar-width);
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+  padding: 24px 0;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+  overflow-y: auto;
+  z-index: 50;
+}
+
+.product-management-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px;
+}
+
+.product-management-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.product-management-sidebar-link:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.product-management-sidebar-link.active {
+  background: #6366f1;
+  color: #fff;
+}
+
+.product-management-sidebar-link .sidebar-icon {
+  flex-shrink: 0;
+}
+
+.product-management-outlet {
+  flex: 1;
+  min-width: 0;
+  margin-left: var(--pm-sidebar-width);
+  overflow: auto;
+  padding: 24px;
+}

@@ -4,6 +4,9 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import ProductManagementPage from './pages/ProductManagementPage';
+import ProductDashboardPage from './pages/ProductDashboardPage';
+import ProductOrdersPage from './pages/ProductOrdersPage';
+import ProductManagementLayout from './components/layout/ProductManagementLayout';
 import ProductDetailPage from './pages/ProductDetailPage';
 import AddProductPage from './pages/AddProductPage';
 import RevenuePage from './pages/RevenuePage';
@@ -12,7 +15,9 @@ import CheckoutPage from './pages/CheckoutPage';
 import CheckoutPaymentPage from './pages/CheckoutPaymentPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import RentProductsPage from './pages/RentProductsPage';
+import UserManagementPage from './pages/UserManagementPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import './App.css';
 
@@ -32,14 +37,12 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/products"
-          element={
-            <ProtectedRoute>
-              <ProductManagementPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/products" element={<ProtectedRoute><ProductManagementLayout /></ProtectedRoute>}>
+          <Route index element={<ProductDashboardPage />} />
+          <Route path="list" element={<ProductManagementPage />} />
+          <Route path="orders" element={<ProductOrdersPage />} />
+          <Route path="add" element={<AddProductPage />} />
+        </Route>
         <Route
           path="/rent"
           element={
@@ -101,6 +104,16 @@ function App() {
           element={
             <ProtectedRoute>
               <CheckoutPaymentPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <ProtectedRoute>
+              <AdminRoute>
+                <UserManagementPage />
+              </AdminRoute>
             </ProtectedRoute>
           }
         />
