@@ -1,0 +1,53 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: mimi
+    # ports: - "3306:3306" # Nên ẩn đi nếu không cần dùng tool DB bên ngoài kết nối vào
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    image: hoangduy20407/mimi-backend:latest
+    container_name: mimi-backend
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/mimi?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+    volumes:
+      - /opt/mimiStyle/uploads:/uploads
+    depends_on:
+      - mysql-db
+
+  frontend:
+    image: hoangduy20407/mimi-frontend:latest
+    container_name: mimi-frontend
+    restart: always
+    # KHÔNG expose cổng 80 ra ngoài nữa, NPM sẽ gọi trực tiếp bên trong docker network
+    expose:
+      - "80"
+    depends_on:
+      - backend
+
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    restart: always
+    ports:
+      - '80:80'   # Cổng web chính
+      - '81:81'   # Cổng admin để bạn cấu hình tên miền
+      - '443:443' # Cổng HTTPS
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - frontend
+
+volumes:
+  mysql_data:
