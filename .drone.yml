@@ -7,7 +7,7 @@ steps:
   - name: build-and-push-backend
     image: plugins/docker
     settings:
-      context: ./mimiStyle-backend
+      context: ./mimiStyle-backend/mimi/mimi
       dockerfile: ./mimiStyle-backend/mimi/mimi/Dockerfile
       repo: hoangduy20407/mimi-backend
       tags: latest
