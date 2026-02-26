@@ -325,8 +325,16 @@
   font-size: 15px;
   line-height: 1.8;
   color: #374151;
-  white-space: pre-wrap;
+  white-space: pre-line;
   word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.description-content p,
+.specs-content p,
+.reviews-content p {
+  margin: 0;
+  white-space: pre-line;
 }
 
 /* Loading & Error States */

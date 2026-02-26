@@ -271,7 +271,9 @@ export default function ProductDetailPage() {
           <div className="tab-content">
             {activeTab === 'description' && (
               <div className="description-content">
-                <p>{product.description || 'Chưa có mô tả cho sản phẩm này.'}</p>
+                <p style={{ whiteSpace: 'pre-line' }}>
+                  {product.description || 'Chưa có mô tả cho sản phẩm này.'}
+                </p>
               </div>
             )}
             {activeTab === 'specs' && (
