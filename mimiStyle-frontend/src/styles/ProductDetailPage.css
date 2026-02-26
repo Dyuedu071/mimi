@@ -325,6 +325,8 @@
   font-size: 15px;
   line-height: 1.8;
   color: #374151;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 /* Loading & Error States */
