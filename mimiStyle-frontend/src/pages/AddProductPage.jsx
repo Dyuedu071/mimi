@@ -18,6 +18,7 @@ const AddProductPage = () => {
     tradeType: 'BUY_ONLY', // BUY_ONLY, RENT_ONLY, BOTH
     condition: 'NEW', // NEW, USED, LIKE_NEW
     description: '',
+    specifications: '', // Thông số kỹ thuật
     price: '',
     rentPrice: '',
     deposit: '', // Tiền cọc cho thuê
@@ -145,6 +146,7 @@ const AddProductPage = () => {
       const productData = {
         name: formData.name.trim(),
         description: formData.description.trim(),
+        specifications: formData.specifications.trim() || null,
         buyPrice: formData.tradeType === 'RENT_ONLY' ? null : parseFloat(formData.price) || null,
         rentPrice: formData.tradeType === 'BUY_ONLY' ? null : parseFloat(formData.rentPrice) || null,
         deposit: formData.tradeType === 'BUY_ONLY' ? null : parseFloat(formData.deposit) || null,
@@ -392,6 +394,23 @@ const AddProductPage = () => {
                 required
               />
               {errors.description && <div className="field-error">{errors.description}</div>}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">
+                Thông số kỹ thuật
+              </label>
+              <textarea
+                name="specifications"
+                value={formData.specifications}
+                onChange={handleInputChange}
+                placeholder="Ví dụ:&#10;• Kích thước: D89 x R46.5 x C99.5 (cm)&#10;• Trọng lượng: 6.2 kg&#10;• Chất liệu: Nhôm cao cấp&#10;• Độ tuổi: 0-3 tuổi"
+                className="form-textarea"
+                rows={6}
+              />
+              <div style={{fontSize: '12px', color: '#6b7280', marginTop: '4px'}}>
+                💡 Mỗi thông số nên xuống dòng riêng để dễ đọc
+              </div>
             </div>
 
             <div className="price-group">

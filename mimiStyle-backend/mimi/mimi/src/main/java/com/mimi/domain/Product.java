@@ -38,6 +38,9 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
     
+    @Column(columnDefinition = "TEXT")
+    private String specifications;
+    
     @Column(name = "condition_percentage")
     private Integer conditionPercentage;
     
@@ -50,6 +53,9 @@ public class Product {
     
     @Column(name = "rent_price", precision = 19, scale = 2)
     private BigDecimal rentPrice;
+    
+    @Column(name = "deposit", precision = 19, scale = 2)
+    private BigDecimal deposit;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "rent_unit")

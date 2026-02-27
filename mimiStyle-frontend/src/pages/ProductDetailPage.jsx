@@ -292,7 +292,11 @@ export default function ProductDetailPage() {
             )}
             {activeTab === 'specs' && (
               <div className="specs-content">
-                <p>Thông số kỹ thuật sẽ được cập nhật sau.</p>
+                {product.specifications ? (
+                  <p style={{ whiteSpace: 'pre-line' }}>{product.specifications}</p>
+                ) : (
+                  <p>Thông số kỹ thuật sẽ được cập nhật sau.</p>
+                )}
               </div>
             )}
             {activeTab === 'reviews' && (
