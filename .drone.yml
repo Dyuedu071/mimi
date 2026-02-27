@@ -2,6 +2,10 @@ kind: pipeline
 type: docker
 name: mimishop-production-cicd
 
+# Sử dụng Docker mirror để tránh timeout
+clone:
+  disable: false
+
 steps:
   # 1. Build và Push Backend Image lên Docker Hub
   - name: build-and-push-backend
@@ -15,6 +19,11 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
+      registry: registry-1.docker.io
+      insecure: false
+      debug: true
+      # Sử dụng mirror
+      mirror: https://mirror.gcr.io
     when:
       branch:
         - main
@@ -31,6 +40,11 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
+      registry: registry-1.docker.io
+      insecure: false
+      debug: true
+      # Sử dụng mirror
+      mirror: https://mirror.gcr.io
     when:
       branch:
         - main
@@ -46,6 +60,7 @@ steps:
       key:
         from_secret: ssh_key
       port: 22
+      command_timeout: 10m
       script:
         - cd /opt/mimi
         # Kéo bản mới nhất của 2 image vừa push xong
