@@ -119,6 +119,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/user-management"
+          element={
+            <ProtectedRoute>
+              <AdminRoute>
+                <UserManagementPage />
+              </AdminRoute>
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       </ErrorBoundary>
     </div>
