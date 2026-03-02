@@ -1,14 +1,9 @@
 package com.mimi.service;
 
 import com.mimi.domain.Category;
-import com.mimi.domain.Product;
 import com.mimi.domain.User;
 import com.mimi.domain.Voucher;
-import com.mimi.domain.ProductImage;
-import com.mimi.domain.enums.ProductStatus;
-import com.mimi.domain.enums.RentUnit;
 import com.mimi.domain.enums.Role;
-import com.mimi.domain.enums.TradeType;
 import com.mimi.repository.CategoryRepository;
 import com.mimi.repository.ProductRepository;
 import com.mimi.repository.UserRepository;
@@ -19,8 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
