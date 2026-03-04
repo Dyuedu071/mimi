@@ -11,6 +11,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -47,6 +51,38 @@ public class UserController {
                 .map(this::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(list);
+    }
+
+    /**
+     * List users with pagination (for ADMIN).
+     */
+    @GetMapping("/list/paginated")
+    public ResponseEntity<?> listUsersPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+        try {
+            Sort sort = sortDir.equalsIgnoreCase("desc") 
+                ? Sort.by(sortBy).descending() 
+                : Sort.by(sortBy).ascending();
+            
+            Pageable pageable = PageRequest.of(page, size, sort);
+            Page<User> userPage = userRepository.findAll(pageable);
+            
+            var response = new java.util.HashMap<String, Object>();
+            response.put("users", userPage.getContent().stream()
+                    .map(this::toResponse)
+                    .collect(Collectors.toList()));
+            response.put("currentPage", userPage.getNumber());
+            response.put("totalItems", userPage.getTotalElements());
+            response.put("totalPages", userPage.getTotalPages());
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to get users: " + e.getMessage());
+        }
     }
 
     /**

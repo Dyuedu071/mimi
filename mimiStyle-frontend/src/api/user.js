@@ -23,6 +23,20 @@ export async function getAllUsers() {
   return Array.isArray(data) ? data : [];
 }
 
+/**
+ * Lấy danh sách user với phân trang (dành cho ADMIN).
+ */
+export async function getUsersPaginated(page = 0, size = 10, sortBy = 'id', sortDir = 'asc') {
+  const res = await fetch(
+    `${API_BASE_URL}/users/list/paginated?page=${page}&size=${size}&sortBy=${sortBy}&sortDir=${sortDir}`
+  );
+  const { data } = await parseResponse(res);
+  if (!res.ok) {
+    throw new Error(typeof data === 'string' ? data : 'Không thể tải danh sách user');
+  }
+  return data;
+}
+
 export async function getUserById(id) {
   const res = await fetch(`${API_BASE_URL}/users/${id}`);
   const { data, text } = await parseResponse(res);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Eye, TrendingUp } from 'lucide-react';
+import { Users, Eye, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import Layout from '../components/layout/Layout';
-import { getAllUsers, getSystemStats } from '../api/user';
+import { getUsersPaginated, getSystemStats } from '../api/user';
 import { API_ORIGIN } from '../api/config';
 import '../styles/UserManagementPage.css';
 
@@ -26,6 +26,14 @@ const UserManagementPage = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [sortBy, setSortBy] = useState('id');
+  const [sortDir, setSortDir] = useState('asc');
 
   useEffect(() => {
     const saved = sessionStorage.getItem('user');
@@ -47,12 +55,17 @@ const UserManagementPage = () => {
   }, [navigate]);
 
   useEffect(() => {
+    if (!user) return;
+    
+    setLoading(true);
     Promise.all([
-      getAllUsers(),
-      getSystemStats().catch(() => null) // Nếu API chưa có thì trả null
+      getUsersPaginated(currentPage, pageSize, sortBy, sortDir),
+      getSystemStats().catch(() => null)
     ])
-      .then(([usersData, statsData]) => {
-        setUsers(Array.isArray(usersData) ? usersData : []);
+      .then(([paginatedData, statsData]) => {
+        setUsers(Array.isArray(paginatedData.users) ? paginatedData.users : []);
+        setTotalPages(paginatedData.totalPages || 0);
+        setTotalItems(paginatedData.totalItems || 0);
         setStats(statsData);
       })
       .catch((err) => {
@@ -60,12 +73,32 @@ const UserManagementPage = () => {
         setUsers([]);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [user, currentPage, pageSize, sortBy, sortDir]);
 
   if (!user) return null;
 
   const formatNumber = (num) => {
     return new Intl.NumberFormat('vi-VN').format(num || 0);
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 0 && newPage < totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  const handlePageSizeChange = (e) => {
+    setPageSize(Number(e.target.value));
+    setCurrentPage(0);
+  };
+
+  const handleSort = (field) => {
+    if (sortBy === field) {
+      setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(field);
+      setSortDir('asc');
+    }
   };
 
   return (
@@ -118,19 +151,42 @@ const UserManagementPage = () => {
         ) : (
           <div className="user-management-table-wrap">
             <div className="table-header">
-              <h2>Danh sách người dùng ({users.length})</h2>
+              <h2>Danh sách người dùng ({totalItems})</h2>
+              <div className="table-controls">
+                <label>
+                  Hiển thị:
+                  <select value={pageSize} onChange={handlePageSizeChange} className="page-size-select">
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                  </select>
+                </label>
+              </div>
             </div>
             <table className="user-management-table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th onClick={() => handleSort('id')} className="sortable">
+                    ID {sortBy === 'id' && (sortDir === 'asc' ? '↑' : '↓')}
+                  </th>
                   <th>Avatar</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Họ tên</th>
+                  <th onClick={() => handleSort('username')} className="sortable">
+                    Username {sortBy === 'username' && (sortDir === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('email')} className="sortable">
+                    Email {sortBy === 'email' && (sortDir === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('fullName')} className="sortable">
+                    Họ tên {sortBy === 'fullName' && (sortDir === 'asc' ? '↑' : '↓')}
+                  </th>
                   <th>Số điện thoại</th>
-                  <th>Vai trò</th>
-                  <th>Lượt truy cập</th>
+                  <th onClick={() => handleSort('role')} className="sortable">
+                    Vai trò {sortBy === 'role' && (sortDir === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('pageViews')} className="sortable">
+                    Lượt truy cập {sortBy === 'pageViews' && (sortDir === 'asc' ? '↑' : '↓')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -172,6 +228,36 @@ const UserManagementPage = () => {
             </table>
             {users.length === 0 && (
               <div className="user-management-empty">Chưa có người dùng nào.</div>
+            )}
+            
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="pagination-controls">
+                <button 
+                  onClick={() => handlePageChange(currentPage - 1)} 
+                  disabled={currentPage === 0}
+                  className="pagination-btn"
+                >
+                  <ChevronLeft size={18} />
+                  Trước
+                </button>
+                
+                <div className="pagination-info">
+                  <span>Trang {currentPage + 1} / {totalPages}</span>
+                  <span className="pagination-items">
+                    ({currentPage * pageSize + 1}-{Math.min((currentPage + 1) * pageSize, totalItems)} / {totalItems})
+                  </span>
+                </div>
+                
+                <button 
+                  onClick={() => handlePageChange(currentPage + 1)} 
+                  disabled={currentPage >= totalPages - 1}
+                  className="pagination-btn"
+                >
+                  Sau
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             )}
           </div>
         )}
