@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Eye, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Users, Eye, TrendingUp, ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react';
 import Layout from '../components/layout/Layout';
-import { getUsersPaginated, getSystemStats } from '../api/user';
+import { getUsersPaginated, getSystemStats, incrementPageView } from '../api/user';
 import { API_ORIGIN } from '../api/config';
 import '../styles/UserManagementPage.css';
 
@@ -101,6 +101,43 @@ const UserManagementPage = () => {
     }
   };
 
+  const handleIncrementPageView = async (userId) => {
+    try {
+      await incrementPageView(userId);
+      // Refresh data
+      const paginatedData = await getUsersPaginated(currentPage, pageSize, sortBy, sortDir);
+      setUsers(Array.isArray(paginatedData.users) ? paginatedData.users : []);
+      const statsData = await getSystemStats().catch(() => null);
+      setStats(statsData);
+    } catch (err) {
+      alert(err?.message || 'Không thể cập nhật pageview');
+    }
+  };
+
+  const handleAutoIncrementAll = async () => {
+    if (!window.confirm('Bạn có chắc muốn tự động tăng pageview cho tất cả user?')) {
+      return;
+    }
+    
+    try {
+      setLoading(true);
+      // Increment pageview for all users
+      await Promise.all(users.map(u => incrementPageView(u.id)));
+      
+      // Refresh data
+      const paginatedData = await getUsersPaginated(currentPage, pageSize, sortBy, sortDir);
+      setUsers(Array.isArray(paginatedData.users) ? paginatedData.users : []);
+      const statsData = await getSystemStats().catch(() => null);
+      setStats(statsData);
+      
+      alert('Đã cập nhật pageview cho tất cả user thành công!');
+    } catch (err) {
+      alert(err?.message || 'Có lỗi xảy ra khi cập nhật pageview');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout>
       <div className="user-management-page">
@@ -153,6 +190,14 @@ const UserManagementPage = () => {
             <div className="table-header">
               <h2>Danh sách người dùng ({totalItems})</h2>
               <div className="table-controls">
+                <button 
+                  onClick={handleAutoIncrementAll} 
+                  className="auto-increment-btn"
+                  disabled={loading || users.length === 0}
+                >
+                  <RefreshCw size={16} />
+                  Tự động tăng pageview
+                </button>
                 <label>
                   Hiển thị:
                   <select value={pageSize} onChange={handlePageSizeChange} className="page-size-select">
@@ -187,6 +232,7 @@ const UserManagementPage = () => {
                   <th onClick={() => handleSort('pageViews')} className="sortable">
                     Lượt truy cập {sortBy === 'pageViews' && (sortDir === 'asc' ? '↑' : '↓')}
                   </th>
+                  <th>Thao tác</th>
                 </tr>
               </thead>
               <tbody>
@@ -221,6 +267,15 @@ const UserManagementPage = () => {
                     </td>
                     <td className="col-views">
                       <span className="view-count">{formatNumber(u.pageViews || 0)}</span>
+                    </td>
+                    <td className="col-actions">
+                      <button 
+                        onClick={() => handleIncrementPageView(u.id)}
+                        className="increment-btn"
+                        title="Tăng pageview +1"
+                      >
+                        <Eye size={14} />
+                      </button>
                     </td>
                   </tr>
                 ))}

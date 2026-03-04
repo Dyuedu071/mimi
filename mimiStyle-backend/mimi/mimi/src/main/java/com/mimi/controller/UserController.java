@@ -210,6 +210,46 @@ public class UserController {
         }
     }
 
+    /**
+     * Increment page view count for a user.
+     * This endpoint can be called whenever a user profile is viewed.
+     */
+    @PostMapping("/{id}/increment-pageview")
+    public ResponseEntity<?> incrementPageView(@PathVariable Long id) {
+        Optional<User> opt = userRepository.findById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User not found");
+        }
+
+        User user = opt.get();
+        Integer currentViews = user.getPageViews() != null ? user.getPageViews() : 0;
+        user.setPageViews(currentViews + 1);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(toResponse(user));
+    }
+
+    /**
+     * Manually set page view count for a user (for ADMIN).
+     */
+    @PutMapping("/{id}/pageviews")
+    public ResponseEntity<?> updatePageViews(
+            @PathVariable Long id,
+            @RequestParam Integer pageViews) {
+        Optional<User> opt = userRepository.findById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User not found");
+        }
+
+        User user = opt.get();
+        user.setPageViews(pageViews);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(toResponse(user));
+    }
+
     private UserResponse toResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())

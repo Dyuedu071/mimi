@@ -88,3 +88,31 @@ export async function getSystemStats() {
   }
   return data;
 }
+
+/**
+ * Tăng pageview cho user (tự động +1).
+ */
+export async function incrementPageView(userId) {
+  const res = await fetch(`${API_BASE_URL}/users/${userId}/increment-pageview`, {
+    method: 'POST',
+  });
+  const { data } = await parseResponse(res);
+  if (!res.ok) {
+    throw new Error(typeof data === 'string' ? data : 'Không thể cập nhật pageview');
+  }
+  return data;
+}
+
+/**
+ * Cập nhật pageview cho user (set giá trị cụ thể - dành cho ADMIN).
+ */
+export async function updatePageViews(userId, pageViews) {
+  const res = await fetch(`${API_BASE_URL}/users/${userId}/pageviews?pageViews=${pageViews}`, {
+    method: 'PUT',
+  });
+  const { data } = await parseResponse(res);
+  if (!res.ok) {
+    throw new Error(typeof data === 'string' ? data : 'Không thể cập nhật pageview');
+  }
+  return data;
+}
