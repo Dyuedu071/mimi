@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Eye, ShoppingBag, TrendingUp } from 'lucide-react';
+import { Users, Eye, TrendingUp } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { getAllUsers, getSystemStats } from '../api/user';
 import { API_ORIGIN } from '../api/config';
@@ -96,16 +96,6 @@ const UserManagementPage = () => {
               <div className="stat-content">
                 <div className="stat-label">Lượt truy cập</div>
                 <div className="stat-value">{formatNumber(stats.totalPageViews || 0)}</div>
-              </div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-icon" style={{ background: '#d1fae5' }}>
-                <ShoppingBag size={24} color="#059669" />
-              </div>
-              <div className="stat-content">
-                <div className="stat-label">Tổng đơn hàng</div>
-                <div className="stat-value">{formatNumber(stats.totalOrders || 0)}</div>
               </div>
             </div>
 
