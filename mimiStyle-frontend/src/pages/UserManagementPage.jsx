@@ -232,7 +232,6 @@ const UserManagementPage = () => {
                   <th onClick={() => handleSort('pageViews')} className="sortable">
                     Lượt truy cập {sortBy === 'pageViews' && (sortDir === 'asc' ? '↑' : '↓')}
                   </th>
-                  <th>Thao tác</th>
                 </tr>
               </thead>
               <tbody>
@@ -267,15 +266,6 @@ const UserManagementPage = () => {
                     </td>
                     <td className="col-views">
                       <span className="view-count">{formatNumber(u.pageViews || 0)}</span>
-                    </td>
-                    <td className="col-actions">
-                      <button 
-                        onClick={() => handleIncrementPageView(u.id)}
-                        className="increment-btn"
-                        title="Tăng pageview +1"
-                      >
-                        <Eye size={14} />
-                      </button>
                     </td>
                   </tr>
                 ))}
