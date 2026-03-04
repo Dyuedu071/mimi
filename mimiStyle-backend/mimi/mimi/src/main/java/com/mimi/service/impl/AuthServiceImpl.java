@@ -52,10 +52,12 @@ public class AuthServiceImpl implements AuthService {
                 .address(saved.getAddress())
                        .avatarUrl(saved.getAvatarUrl())
                 .role(saved.getRole())
+                .pageViews(saved.getPageViews())
                 .build();
     }
 
     @Override
+    @Transactional
     public UserResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
@@ -63,6 +65,10 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid email or password");
         }
+
+        // Tăng lượt truy cập mỗi khi đăng nhập
+        user.setPageViews((user.getPageViews() != null ? user.getPageViews() : 0) + 1);
+        userRepository.save(user);
 
         return UserResponse.builder()
                 .id(user.getId())
@@ -74,6 +80,7 @@ public class AuthServiceImpl implements AuthService {
                 .address(user.getAddress())
                        .avatarUrl(user.getAvatarUrl())
                 .role(user.getRole())
+                .pageViews(user.getPageViews())
                 .build();
     }
 }
