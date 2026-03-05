@@ -1,4 +1,5 @@
 import Header from './Header';
+import ChatBot from '../ChatBot';
 import '../../styles/Layout.css';
 
 export default function Layout({ children }) {
@@ -8,6 +9,7 @@ export default function Layout({ children }) {
       <main className="app-main-content">
         {children}
       </main>
+      <ChatBot />
     </div>
   );
 }
