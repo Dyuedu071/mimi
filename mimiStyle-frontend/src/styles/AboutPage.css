@@ -12,8 +12,8 @@
 
 /* Hero */
 .about-hero {
-  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 50%, #4c1d95 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 50%, #ddd6fe 100%);
+  color: #1f2937;
   padding: 4rem 1.5rem 5rem;
   text-align: center;
 }
@@ -29,7 +29,10 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.9);
+  color: #ec4899;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
   margin-bottom: 1rem;
 }
 
@@ -39,13 +42,14 @@
   margin: 0 0 1rem 0;
   line-height: 1.2;
   letter-spacing: -0.02em;
+  color: #1f2937;
 }
 
 .about-hero-lead {
   font-size: 1.125rem;
   line-height: 1.7;
   margin: 0;
-  opacity: 0.95;
+  color: #374151;
 }
 
 /* Intro */
@@ -62,7 +66,7 @@
 }
 
 .about-section-title--light {
-  color: #fff;
+  color: #1f2937;
   margin-bottom: 2rem;
 }
 
@@ -102,8 +106,8 @@
   width: 64px;
   height: 64px;
   margin: 0 auto 1.25rem;
-  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-  color: #6d28d9;
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+  color: #ec4899;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -150,7 +154,7 @@
 }
 
 .about-feature-icon {
-  color: #7c3aed;
+  color: #ec4899;
   margin-bottom: 1rem;
 }
 
@@ -207,7 +211,7 @@
 
 /* Values */
 .about-values {
-  background: linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%);
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
   padding: 3rem 0;
 }
 
@@ -239,13 +243,13 @@
   margin: 0 auto;
   text-align: center;
   padding: 2.5rem;
-  background: linear-gradient(135deg, #f3e8ff 0%, #ede9fe 100%);
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
   border-radius: 20px;
-  border: 1px solid #e9d5ff;
+  border: 1px solid #fcd34d;
 }
 
 .about-cta-icon {
-  color: #7c3aed;
+  color: #f59e0b;
   margin-bottom: 1rem;
 }
 
@@ -281,19 +285,19 @@
 }
 
 .about-cta-btn--primary {
-  background: #7c3aed;
+  background: #ec4899;
   color: #fff;
 }
 
 .about-cta-btn--primary:hover {
-  background: #6d28d9;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+  background: #db2777;
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35);
 }
 
 .about-cta-btn--secondary {
   background: #fff;
-  color: #7c3aed;
-  border: 2px solid #7c3aed;
+  color: #ec4899;
+  border: 2px solid #ec4899;
 }
 
 .about-cta-btn--secondary:hover {
@@ -326,7 +330,7 @@
 .about-contact-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border-color: #7c3aed;
+  border-color: #ec4899;
 }
 
 .about-contact-icon {
@@ -355,7 +359,7 @@
 
 .about-contact-link {
   display: inline-block;
-  color: #7c3aed;
+  color: #ec4899;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
@@ -363,7 +367,7 @@
 }
 
 .about-contact-link:hover {
-  color: #5b21b6;
+  color: #db2777;
   text-decoration: underline;
 }
 

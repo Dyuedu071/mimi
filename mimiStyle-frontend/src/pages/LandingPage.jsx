@@ -10,7 +10,7 @@ import strollerImg from '../assets/img-product/xe-day-tre-em-joie-versatrax-lago
 import chairImg from '../assets/img-product/ghe-an-dam-umoo-1606186868.jpg';
 import toyImg from '../assets/img-product/z6021933351086_28eb8d7e91cc13e47c6e338d1bea00f3.jpg';
 import '../styles/LandingPage.css';
-import meVaBe from '../assets/me-va-be.jpeg';
+import meVaBe from '../assets/mebe3.jpg';
 
 export default function LandingPage() {
   const navigate = useNavigate();

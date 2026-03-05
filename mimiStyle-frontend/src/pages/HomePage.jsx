@@ -10,6 +10,7 @@ import cribImg from '../assets/img-product/top-5-thuong-hieu-noi-cho-be-duoc-ua-
 import strollerImg from '../assets/img-product/xe-day-tre-em-joie-versatrax-lagoon.jpg';
 import chairImg from '../assets/img-product/ghe-an-dam-umoo-1606186868.jpg';
 import toyImg from '../assets/img-product/z6021933351086_28eb8d7e91cc13e47c6e338d1bea00f3.jpg';
+import heroBanner from '../assets/mebe2.jpg';
 import '../styles/HomePage.css';
 
 export default function HomePage() {
@@ -197,6 +198,8 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="home-hero">
+        <div className="home-hero-overlay"></div>
+        <img src={heroBanner} alt="Mẹ và Bé" className="home-hero-bg" />
         <div className="home-hero-content">
           <h1 className="home-hero-title">
             Chào Mừng đến MiMi: Chăm Sóc Toàn Diện Cho Bé Yêu!
@@ -204,7 +207,14 @@ export default function HomePage() {
           <p className="home-hero-description">
             Khám phá hàng ngàn sản phẩm chất lượng cho bé, từ máy tiệt trùng bình sữa hiện đại đến máy hút sữa thông minh, đồ dùng thiết yếu và đồ chơi sáng tạo. Mua sắm hoặc thuê, MiMi luôn có những lựa chọn hoàn hảo cho gia đình bạn.
           </p>
-          <button className="home-hero-button">Khám Phá Ngay</button>
+          <button className="home-hero-button" onClick={() => {
+            const searchSection = document.querySelector('.home-search-section');
+            if (searchSection) {
+              searchSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}>
+            Khám Phá Ngay
+          </button>
         </div>
       </section>
 
