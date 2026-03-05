@@ -20,6 +20,7 @@ import UserManagementPage from './pages/UserManagementPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import ErrorBoundary from './components/ErrorBoundary';
+import ChatBot from './components/ChatBot';
 import './App.css';
 
 function App() {
@@ -130,6 +131,7 @@ function App() {
           }
         />
       </Routes>
+      <ChatBot />
       </ErrorBoundary>
     </div>
   );
