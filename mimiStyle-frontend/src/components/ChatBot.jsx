@@ -114,8 +114,8 @@ export default function ChatBot() {
     }
 
     // Liên hệ
-    if (msg.includes('liên hệ') || msg.includes('lien he') || msg.includes('hotline') || msg.includes('số điện thoại')) {
-      return '📞 Liên hệ với chúng tôi:\n\nHotline: 1900-xxxx\nEmail: support@mimistyle.vn\nGiờ làm việc: 8:00 - 22:00 (Thứ 2 - Chủ nhật)';
+    if (msg.includes('liên hệ') || msg.includes('lien he') || msg.includes('hotline') || msg.includes('số điện thoại') || msg.includes('zalo') || msg.includes('facebook') || msg.includes('fb')) {
+      return '📞 Liên hệ với chúng tôi:\n\n📱 Zalo: 0338024663 (Mr. Son)\n📘 Facebook: https://www.facebook.com/giang.quang.son\n📧 Email: mimishop@gmail.com.vn\n\n⏰ Giờ làm việc: 8:00 - 22:00 (Thứ 2 - Chủ nhật)';
     }
 
     // Chào hỏi

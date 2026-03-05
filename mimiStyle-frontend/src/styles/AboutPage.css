@@ -299,3 +299,86 @@
 .about-cta-btn--secondary:hover {
   background: #f5f3ff;
 }
+
+/* Contact Section */
+.about-contact {
+  padding: 4rem 0;
+  background: #f8fafc;
+}
+
+.about-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.about-contact-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.about-contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: #7c3aed;
+}
+
+.about-contact-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.about-contact-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.75rem 0;
+}
+
+.about-contact-card p {
+  font-size: 1rem;
+  color: #475569;
+  margin: 0.25rem 0;
+}
+
+.about-contact-name {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+.about-contact-link {
+  display: inline-block;
+  color: #7c3aed;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  word-break: break-all;
+}
+
+.about-contact-link:hover {
+  color: #5b21b6;
+  text-decoration: underline;
+}
+
+.about-contact-hours {
+  text-align: center;
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.about-contact-hours p {
+  font-size: 1rem;
+  color: #475569;
+  margin: 0;
+  font-weight: 500;
+}

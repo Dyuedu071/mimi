@@ -154,6 +154,46 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
+
+        {/* Contact Section */}
+        <section className="about-contact">
+          <div className="about-container">
+            <h2 className="about-section-title">Liên hệ với chúng tôi</h2>
+            <div className="about-contact-grid">
+              <div className="about-contact-card">
+                <div className="about-contact-icon">📱</div>
+                <h3>Zalo</h3>
+                <p>0338024663</p>
+                <p className="about-contact-name">(Mr. Son)</p>
+              </div>
+              <div className="about-contact-card">
+                <div className="about-contact-icon">📘</div>
+                <h3>Facebook</h3>
+                <a 
+                  href="https://www.facebook.com/giang.quang.son" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="about-contact-link"
+                >
+                  facebook.com/giang.quang.son
+                </a>
+              </div>
+              <div className="about-contact-card">
+                <div className="about-contact-icon">📧</div>
+                <h3>Email</h3>
+                <a 
+                  href="mailto:mimishop@gmail.com.vn"
+                  className="about-contact-link"
+                >
+                  mimishop@gmail.com.vn
+                </a>
+              </div>
+            </div>
+            <div className="about-contact-hours">
+              <p>⏰ Giờ làm việc: 8:00 - 22:00 (Thứ 2 - Chủ nhật)</p>
+            </div>
+          </div>
+        </section>
       </div>
     </Layout>
   );
