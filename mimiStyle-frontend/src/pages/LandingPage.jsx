@@ -183,7 +183,20 @@ export default function LandingPage() {
           <nav className="landing-nav-menu">
             <button className="landing-nav-link">Trang Chủ</button>
             <button className="landing-nav-link" onClick={() => navigate('/about')}>Giới Thiệu</button>
-            <button className="landing-nav-link">Liên Hệ</button>
+            <button 
+              className="landing-nav-link"
+              onClick={() => {
+                navigate('/about');
+                setTimeout(() => {
+                  const contactSection = document.querySelector('.about-contact');
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }, 100);
+              }}
+            >
+              Liên Hệ
+            </button>
           </nav>
           <div className="landing-auth-buttons">
             <button className="landing-login-btn" onClick={goToLogin}>

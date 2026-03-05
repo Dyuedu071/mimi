@@ -107,7 +107,20 @@ export default function Header() {
           >
             Giới Thiệu
           </button>
-          <button className="app-nav-link" type="button">
+          <button 
+            className="app-nav-link" 
+            type="button"
+            onClick={() => {
+              navigate('/about');
+              // Scroll to contact section after navigation
+              setTimeout(() => {
+                const contactSection = document.querySelector('.about-contact');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }, 100);
+            }}
+          >
             Liên Hệ
           </button>
         </nav>
