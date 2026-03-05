@@ -102,6 +102,13 @@ export default function Header() {
           </button>
           <button
             type="button"
+            className={`app-nav-link ${pathname === '/products/all' ? 'active' : ''}`}
+            onClick={() => navigate('/products/all')}
+          >
+            Tất cả sản phẩm
+          </button>
+          <button
+            type="button"
             className={`app-nav-link ${pathname === '/about' ? 'active' : ''}`}
             onClick={() => navigate('/about')}
           >

@@ -207,6 +207,7 @@ export default function LandingPage() {
           </div>
           <nav className="landing-nav-menu">
             <button className="landing-nav-link">Trang Chủ</button>
+            <button className="landing-nav-link" onClick={() => navigate('/products/all')}>Tất cả sản phẩm</button>
             <button className="landing-nav-link" onClick={() => navigate('/about')}>Giới Thiệu</button>
             <button 
               className="landing-nav-link"

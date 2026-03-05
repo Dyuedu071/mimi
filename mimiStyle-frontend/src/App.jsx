@@ -3,6 +3,7 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import AllProductsPage from './pages/AllProductsPage';
 import ProductManagementPage from './pages/ProductManagementPage';
 import ProductDashboardPage from './pages/ProductDashboardPage';
 import ProductOrdersPage from './pages/ProductOrdersPage';
@@ -32,6 +33,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/products/all" element={<AllProductsPage />} />
         <Route
           path="/home"
           element={
