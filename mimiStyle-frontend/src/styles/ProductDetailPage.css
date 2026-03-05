@@ -294,6 +294,22 @@
   background: #5856eb;
 }
 
+.add-to-cart-btn.login-required-btn {
+  background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+}
+
+.add-to-cart-btn.login-required-btn:hover {
+  background: linear-gradient(135deg, #db2777 0%, #ec4899 100%);
+}
+
+.add-to-cart-btn.checkout-btn {
+  background: #10b981;
+}
+
+.add-to-cart-btn.checkout-btn:hover {
+  background: #059669;
+}
+
 /* Product Tabs */
 .product-tabs-section {
   max-width: 1200px;

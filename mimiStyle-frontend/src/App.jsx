@@ -56,11 +56,7 @@ function App() {
         />
         <Route
           path="/product/:id"
-          element={
-            <ProtectedRoute>
-              <ProductDetailPage />
-            </ProtectedRoute>
-          }
+          element={<ProductDetailPage />}
         />
         <Route
           path="/add"

@@ -22,6 +22,7 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
+  const [user, setUser] = useState(null);
   const { addToCart, isInCart } = useCart();
 
   const imageMap = {
@@ -32,6 +33,18 @@ export default function ProductDetailPage() {
     'Ghế ăn dặm cho bé': chairImg,
     'Bộ đồ chơi giáo dục': toyImg,
   };
+
+  useEffect(() => {
+    // Check if user is logged in
+    const savedUser = sessionStorage.getItem('user');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        setUser(null);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     loadProduct();
@@ -247,7 +260,14 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Add to Cart / Checkout Button */}
-            {addedToCart ? (
+            {!user ? (
+              <button 
+                className="add-to-cart-btn login-required-btn" 
+                onClick={() => navigate('/login')}
+              >
+                Đăng nhập để mua hàng
+              </button>
+            ) : addedToCart ? (
               <button className="add-to-cart-btn checkout-btn" onClick={() => navigate('/checkout')}>
                 Thanh toán
               </button>

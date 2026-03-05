@@ -163,7 +163,7 @@ export default function LandingPage() {
             ) : null}
           </div>
 
-          <button className="btn-details" onClick={goToLogin}>
+          <button className="btn-details" onClick={() => navigate(`/product/${product.id}`)}>
             Xem Chi Tiết
           </button>
         </div>
