@@ -4,7 +4,7 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import loginIllustration from '../assets/login-illustration.svg';
 import { loginAccount } from '../api/auth';
 import '../styles/LoginPage.css';
-import meVabe from '../assets/me-va-be.jpeg';
+import meVabe from '../assets/anh-dep-me-va-be_094349636.jpg';
 
 export default function LoginPage() {
   const navigate = useNavigate();

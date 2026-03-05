@@ -32,13 +32,8 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    const savedUser = sessionStorage.getItem('user');
-    if (!savedUser) {
-      navigate('/login', { replace: true });
-    } else {
-      loadProducts();
-    }
-  }, [navigate]);
+    loadProducts();
+  }, []);
 
   const loadProducts = async () => {
     try {

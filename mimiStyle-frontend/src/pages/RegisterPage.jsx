@@ -14,7 +14,7 @@ import {
 import loginIllustration from '../assets/login-illustration.svg';
 import { registerAccount } from '../api/auth';
 import '../styles/RegisterPage.css';
-import meVaBe from '../assets/me-va-be.jpeg';
+import meVaBe from '../assets/anh-me-va-be.jpg';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
