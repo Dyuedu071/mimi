@@ -105,11 +105,33 @@ export default function LandingPage() {
     return <span className={`product-status-badge ${info.class}`}>{info.text}</span>;
   };
 
+  // Hàm loại bỏ dấu tiếng Việt để search tốt hơn
+  const removeVietnameseTones = (str) => {
+    if (!str) return '';
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
+    str = str.replace(/đ/g, 'd');
+    return str;
+  };
+
   const matchesFilters = (product) => {
-    const matchesSearch =
-      !searchQuery ||
-      product.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    const q = searchQuery.trim();
+    
+    if (q) {
+      const searchLower = removeVietnameseTones(q);
+      const nameMatch = product.name && removeVietnameseTones(product.name).includes(searchLower);
+      const descMatch = product.description && removeVietnameseTones(product.description).includes(searchLower);
+      const categoryMatch = (product.categoryName || product.category?.name) && 
+        removeVietnameseTones(product.categoryName || product.category?.name || '').includes(searchLower);
+      
+      const matchesSearch = nameMatch || descMatch || categoryMatch;
+      if (!matchesSearch) return false;
+    }
 
     const isSale = product.tradeType === 'BUY_ONLY' || product.tradeType === 'BOTH';
     const isRent = product.tradeType === 'RENT_ONLY' || product.tradeType === 'BOTH';
@@ -119,11 +141,14 @@ export default function LandingPage() {
       (filterType === 'sale' && isSale) ||
       (filterType === 'rent' && isRent);
 
-    return matchesSearch && matchesType;
+    return matchesType;
   };
 
   const filteredFeaturedProducts = featuredProducts.filter(matchesFilters);
   const filteredNewProducts = newProducts.filter(matchesFilters);
+  
+  const allFilteredProducts = [...new Set([...filteredFeaturedProducts, ...filteredNewProducts])];
+  const hasSearchQuery = searchQuery.trim().length > 0;
 
   const ProductCard = ({ product }) => (
     <div className="product-card">

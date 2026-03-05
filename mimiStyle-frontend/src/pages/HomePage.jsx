@@ -110,13 +110,34 @@ export default function HomePage() {
     return <span className={`product-status-badge ${info.class}`}>{info.text}</span>;
   };
 
-  // Lọc theo tên/mô tả (không phân biệt hoa thường) và theo loại (Tất cả / Bán / Thuê)
+  // Hàm loại bỏ dấu tiếng Việt để search tốt hơn
+  const removeVietnameseTones = (str) => {
+    if (!str) return '';
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
+    str = str.replace(/đ/g, 'd');
+    return str;
+  };
+
+  // Lọc theo tên/mô tả/danh mục (không phân biệt hoa thường và dấu) và theo loại (Tất cả / Bán / Thuê)
   const matchesFilters = (product) => {
-    const q = (searchQuery || '').trim().toLowerCase();
-    const matchesSearch =
-      !q ||
-      (product.name && product.name.toLowerCase().includes(q)) ||
-      (product.description && product.description.toLowerCase().includes(q));
+    const q = (searchQuery || '').trim();
+    
+    if (q) {
+      const searchLower = removeVietnameseTones(q);
+      const nameMatch = product.name && removeVietnameseTones(product.name).includes(searchLower);
+      const descMatch = product.description && removeVietnameseTones(product.description).includes(searchLower);
+      const categoryMatch = (product.categoryName || product.category?.name) && 
+        removeVietnameseTones(product.categoryName || product.category?.name || '').includes(searchLower);
+      
+      const matchesSearch = nameMatch || descMatch || categoryMatch;
+      if (!matchesSearch) return false;
+    }
 
     const isSale = product.tradeType === 'BUY_ONLY' || product.tradeType === 'BOTH';
     const isRent = product.tradeType === 'RENT_ONLY' || product.tradeType === 'BOTH';
@@ -125,11 +146,15 @@ export default function HomePage() {
       (filterType === 'sale' && isSale) ||
       (filterType === 'rent' && isRent);
 
-    return matchesSearch && matchesType;
+    return matchesType;
   };
 
   const filteredFeaturedProducts = featuredProducts.filter(matchesFilters);
   const filteredNewProducts = newProducts.filter(matchesFilters);
+  
+  // Tổng hợp tất cả sản phẩm đã lọc
+  const allFilteredProducts = [...new Set([...filteredFeaturedProducts, ...filteredNewProducts])];
+  const hasSearchQuery = searchQuery.trim().length > 0;
 
   const ProductCard = ({ product }) => (
     <div className="product-card">
@@ -222,10 +247,19 @@ export default function HomePage() {
             <input
               type="text"
               className="home-search-input"
-              placeholder="Tìm kiếm sản phẩm..."
+              placeholder="Tìm theo tên, mô tả, danh mục..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            {searchQuery && (
+              <button 
+                className="home-search-clear"
+                onClick={() => setSearchQuery('')}
+                aria-label="Xóa tìm kiếm"
+              >
+                ✕
+              </button>
+            )}
           </div>
           <div className="home-filter-buttons">
             <button
@@ -247,46 +281,77 @@ export default function HomePage() {
               Sản phẩm Thuê
             </button>
           </div>
-        </div>
-      </section>
-
-      {/* Featured Products Section */}
-      <section className="home-products-section">
-        <div className="home-products-content">
-          <h2 className="home-section-title">Sản Phẩm Nổi Bật</h2>
-          {loading ? (
-            <div className="loading-message">Đang tải sản phẩm...</div>
-          ) : (
-            <div className="products-grid">
-              {filteredFeaturedProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-              {!loading && filteredFeaturedProducts.length === 0 && (
-                <div className="loading-message">Không có sản phẩm nào phù hợp với từ khóa hoặc bộ lọc.</div>
-              )}
+          {hasSearchQuery && (
+            <div className="search-results-info">
+              Tìm thấy {allFilteredProducts.length} sản phẩm cho "{searchQuery}"
             </div>
           )}
         </div>
       </section>
 
-      {/* New Products Section */}
-      <section className="home-products-section">
-        <div className="home-products-content">
-          <h2 className="home-section-title">Sản Phẩm Mới</h2>
-          {loading ? (
-            <div className="loading-message">Đang tải sản phẩm...</div>
-          ) : (
-            <div className="products-grid">
-              {filteredNewProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-              {!loading && filteredNewProducts.length === 0 && (
-                <div className="loading-message">Không có sản phẩm nào phù hợp với từ khóa hoặc bộ lọc.</div>
+      {/* Search Results or Featured/New Products */}
+      {hasSearchQuery ? (
+        <section className="home-products-section">
+          <div className="home-products-content">
+            <h2 className="home-section-title">Kết quả tìm kiếm</h2>
+            {loading ? (
+              <div className="loading-message">Đang tìm kiếm...</div>
+            ) : (
+              <div className="products-grid">
+                {allFilteredProducts.map(product => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+                {!loading && allFilteredProducts.length === 0 && (
+                  <div className="loading-message">
+                    Không tìm thấy sản phẩm nào phù hợp với "{searchQuery}". 
+                    Hãy thử từ khóa khác!
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+      ) : (
+        <>
+          {/* Featured Products Section */}
+          <section className="home-products-section">
+            <div className="home-products-content">
+              <h2 className="home-section-title">Sản Phẩm Nổi Bật</h2>
+              {loading ? (
+                <div className="loading-message">Đang tải sản phẩm...</div>
+              ) : (
+                <div className="products-grid">
+                  {filteredFeaturedProducts.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                  {!loading && filteredFeaturedProducts.length === 0 && (
+                    <div className="loading-message">Không có sản phẩm nào phù hợp với bộ lọc.</div>
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
-      </section>
+          </section>
+
+          {/* New Products Section */}
+          <section className="home-products-section">
+            <div className="home-products-content">
+              <h2 className="home-section-title">Sản Phẩm Mới</h2>
+              {loading ? (
+                <div className="loading-message">Đang tải sản phẩm...</div>
+              ) : (
+                <div className="products-grid">
+                  {filteredNewProducts.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                  {!loading && filteredNewProducts.length === 0 && (
+                    <div className="loading-message">Không có sản phẩm nào phù hợp với bộ lọc.</div>
+                  )}
+                </div>
+              )}
+            </div>
+          </section>
+        </>
+      )}
       </div>
     </Layout>
   );
