@@ -1,4 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useHeartbeat } from './hooks/useHeartbeat';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -25,6 +27,42 @@ import ChatBot from './components/ChatBot';
 import './App.css';
 
 function App() {
+  const [userId, setUserId] = useState(null);
+
+  // Get user ID from session storage
+  useEffect(() => {
+    const savedUser = sessionStorage.getItem('user');
+    if (savedUser) {
+      try {
+        const user = JSON.parse(savedUser);
+        setUserId(user.id);
+      } catch (e) {
+        setUserId(null);
+      }
+    }
+
+    // Listen for user updates
+    const handleUserUpdate = () => {
+      const savedUser = sessionStorage.getItem('user');
+      if (savedUser) {
+        try {
+          const user = JSON.parse(savedUser);
+          setUserId(user.id);
+        } catch (e) {
+          setUserId(null);
+        }
+      } else {
+        setUserId(null);
+      }
+    };
+
+    window.addEventListener('mimi:user-updated', handleUserUpdate);
+    return () => window.removeEventListener('mimi:user-updated', handleUserUpdate);
+  }, []);
+
+  // Send heartbeat every 30 seconds when user is logged in
+  useHeartbeat(userId);
+
   return (
     <div className="App">
       <ErrorBoundary>

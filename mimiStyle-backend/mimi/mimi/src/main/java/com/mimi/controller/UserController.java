@@ -86,6 +86,25 @@ public class UserController {
     }
 
     /**
+     * Update user's last active timestamp (heartbeat).
+     * Called periodically from frontend to track online users.
+     */
+    @PostMapping("/{id}/heartbeat")
+    public ResponseEntity<?> updateHeartbeat(@PathVariable Long id) {
+        Optional<User> opt = userRepository.findById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User not found");
+        }
+
+        User user = opt.get();
+        user.setLastActiveAt(java.time.LocalDateTime.now());
+        userRepository.save(user);
+
+        return ResponseEntity.ok().build();
+    }
+
+    /**
      * Get system statistics (for ADMIN).
      */
     @GetMapping("/stats")
@@ -95,8 +114,11 @@ public class UserController {
             long totalPageViews = userRepository.findAll().stream()
                     .mapToLong(u -> u.getPageViews() != null ? u.getPageViews() : 0)
                     .sum();
+            
+            // Active users = users active in last 5 minutes
+            java.time.LocalDateTime fiveMinutesAgo = java.time.LocalDateTime.now().minusMinutes(5);
             long activeUsers = userRepository.findAll().stream()
-                    .filter(u -> u.getPageViews() != null && u.getPageViews() > 0)
+                    .filter(u -> u.getLastActiveAt() != null && u.getLastActiveAt().isAfter(fiveMinutesAgo))
                     .count();
 
             var stats = new java.util.HashMap<String, Object>();

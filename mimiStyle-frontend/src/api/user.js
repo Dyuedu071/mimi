@@ -116,3 +116,17 @@ export async function updatePageViews(userId, pageViews) {
   }
   return data;
 }
+
+/**
+ * Gửi heartbeat để tracking user đang online.
+ */
+export async function sendHeartbeat(userId) {
+  try {
+    await fetch(`${API_BASE_URL}/users/${userId}/heartbeat`, {
+      method: 'POST',
+    });
+  } catch (error) {
+    // Silent fail - không cần thông báo lỗi
+    console.debug('Heartbeat failed:', error);
+  }
+}

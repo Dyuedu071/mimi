@@ -54,6 +54,9 @@ public class User {
     @Column(name = "page_views")
     private Integer pageViews = 0;
     
+    @Column(name = "last_active_at")
+    private LocalDateTime lastActiveAt;
+    
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

@@ -57,22 +57,35 @@ const UserManagementPage = () => {
   useEffect(() => {
     if (!user) return;
     
-    setLoading(true);
-    Promise.all([
-      getUsersPaginated(currentPage, pageSize, sortBy, sortDir),
-      getSystemStats().catch(() => null)
-    ])
-      .then(([paginatedData, statsData]) => {
-        setUsers(Array.isArray(paginatedData.users) ? paginatedData.users : []);
-        setTotalPages(paginatedData.totalPages || 0);
-        setTotalItems(paginatedData.totalItems || 0);
-        setStats(statsData);
-      })
-      .catch((err) => {
-        setError(err?.message || 'Không thể tải danh sách user');
-        setUsers([]);
-      })
-      .finally(() => setLoading(false));
+    const loadData = () => {
+      setLoading(true);
+      Promise.all([
+        getUsersPaginated(currentPage, pageSize, sortBy, sortDir),
+        getSystemStats().catch(() => null)
+      ])
+        .then(([paginatedData, statsData]) => {
+          setUsers(Array.isArray(paginatedData.users) ? paginatedData.users : []);
+          setTotalPages(paginatedData.totalPages || 0);
+          setTotalItems(paginatedData.totalItems || 0);
+          setStats(statsData);
+        })
+        .catch((err) => {
+          setError(err?.message || 'Không thể tải danh sách user');
+          setUsers([]);
+        })
+        .finally(() => setLoading(false));
+    };
+
+    loadData();
+
+    // Auto refresh stats every 30 seconds to show real-time active users
+    const interval = setInterval(() => {
+      getSystemStats()
+        .then(statsData => setStats(statsData))
+        .catch(() => {});
+    }, 30000);
+
+    return () => clearInterval(interval);
   }, [user, currentPage, pageSize, sortBy, sortDir]);
 
   if (!user) return null;
@@ -169,13 +182,17 @@ const UserManagementPage = () => {
               </div>
             </div>
 
-            <div className="stat-card">
-              <div className="stat-icon" style={{ background: '#fce7f3' }}>
-                <TrendingUp size={24} color="#be185d" />
+            <div className="stat-card stat-card-active">
+              <div className="stat-icon" style={{ background: '#d1fae5' }}>
+                <TrendingUp size={24} color="#10b981" />
               </div>
               <div className="stat-content">
-                <div className="stat-label">Người dùng hoạt động</div>
+                <div className="stat-label">
+                  Đang hoạt động
+                  <span className="stat-badge">LIVE</span>
+                </div>
                 <div className="stat-value">{formatNumber(stats.activeUsers || 0)}</div>
+                <div className="stat-subtitle">Trong 5 phút gần đây</div>
               </div>
             </div>
           </div>

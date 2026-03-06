@@ -402,3 +402,66 @@
 .auto-increment-btn:active:not(:disabled) {
   transform: translateY(0);
 }
+
+/* Active Users Card */
+.stat-card-active {
+  position: relative;
+  overflow: visible;
+}
+
+.stat-card-active::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #10b981, #34d399, #10b981);
+  border-radius: 12px;
+  z-index: -1;
+  opacity: 0.3;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.stat-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  background: #10b981;
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 700;
+  border-radius: 0.25rem;
+  letter-spacing: 0.05em;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.stat-subtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
