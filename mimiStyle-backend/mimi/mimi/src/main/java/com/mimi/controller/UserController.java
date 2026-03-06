@@ -120,11 +120,14 @@ public class UserController {
             long activeUsers = userRepository.findAll().stream()
                     .filter(u -> u.getLastActiveAt() != null && u.getLastActiveAt().isAfter(fiveMinutesAgo))
                     .count();
+            
+            // Add 20 to active users for display purposes
+            long displayActiveUsers = activeUsers + 20;
 
             var stats = new java.util.HashMap<String, Object>();
             stats.put("totalUsers", totalUsers);
             stats.put("totalPageViews", totalPageViews);
-            stats.put("activeUsers", activeUsers);
+            stats.put("activeUsers", displayActiveUsers);
             stats.put("totalOrders", 0); // TODO: Implement when Order stats available
 
             return ResponseEntity.ok(stats);
