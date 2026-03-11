@@ -2,15 +2,20 @@ import React from 'react';
 import '../styles/RevenueChart.css';
 
 const RevenueChart = ({ data, type }) => {
+  console.log('RevenueChart data:', data, 'type:', type);
+  
   if (!data || data.length === 0) {
     return (
       <div className="chart-empty">
-        <p>Chưa có dữ liệu thống kê</p>
+        <p>Chưa có dữ liệu thống kê cho khoảng thời gian này</p>
+        <p style={{ fontSize: '12px', color: '#999', marginTop: '8px' }}>
+          Hãy thử chọn khoảng thời gian khác hoặc tạo đơn hàng mới
+        </p>
       </div>
     );
   }
 
-  const maxRevenue = Math.max(...data.map(d => Number(d.revenue) || 0));
+  const maxRevenue = Math.max(...data.map(d => Number(d.revenue) || 0), 1);
   const maxHeight = 200;
 
   const formatPrice = (price) => {

@@ -20,6 +20,7 @@ import OrderHistoryPage from './pages/OrderHistoryPage';
 import RentProductsPage from './pages/RentProductsPage';
 import AboutPage from './pages/AboutPage';
 import UserManagementPage from './pages/UserManagementPage';
+import TestRevenuePage from './pages/TestRevenuePage';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -163,6 +164,14 @@ function App() {
               <AdminRoute>
                 <UserManagementPage />
               </AdminRoute>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/test-revenue"
+          element={
+            <ProtectedRoute>
+              <TestRevenuePage />
             </ProtectedRoute>
           }
         />
