@@ -1,5 +1,6 @@
 package com.mimi.controller;
 
+import com.mimi.dto.response.DailyRevenueResponse;
 import com.mimi.dto.response.RevenueResponse;
 import com.mimi.dto.response.SoldProductResponse;
 import com.mimi.service.RevenueService;
@@ -38,5 +39,25 @@ public class RevenueController {
         
         List<SoldProductResponse> soldProducts = revenueService.getSoldProducts(userId, startDate, endDate, category);
         return ResponseEntity.ok(soldProducts);
+    }
+
+    @GetMapping("/daily/{userId}")
+    public ResponseEntity<List<DailyRevenueResponse>> getDailyRevenue(
+            @PathVariable Long userId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        
+        List<DailyRevenueResponse> dailyRevenue = revenueService.getDailyRevenue(userId, startDate, endDate);
+        return ResponseEntity.ok(dailyRevenue);
+    }
+
+    @GetMapping("/weekly/{userId}")
+    public ResponseEntity<List<DailyRevenueResponse>> getWeeklyRevenue(
+            @PathVariable Long userId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        
+        List<DailyRevenueResponse> weeklyRevenue = revenueService.getWeeklyRevenue(userId, startDate, endDate);
+        return ResponseEntity.ok(weeklyRevenue);
     }
 }

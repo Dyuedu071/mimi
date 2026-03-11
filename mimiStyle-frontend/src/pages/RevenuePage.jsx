@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PackageCheck, Truck, User, ChevronDown, ChevronUp } from 'lucide-react';
+import { PackageCheck, Truck, User, ChevronDown, ChevronUp, Calendar, BarChart3 } from 'lucide-react';
 import Layout from '../components/layout/Layout';
-import { getRevenueSummary, getSoldProducts } from '../api/revenue';
+import RevenueChart from '../components/RevenueChart';
+import { getRevenueSummary, getSoldProducts, getDailyRevenue, getWeeklyRevenue } from '../api/revenue';
 import { updateOrderStatus } from '../api/order';
 import { API_BASE_URL } from '../api/config';
 import '../styles/RevenuePage.css';
@@ -61,7 +62,16 @@ const RevenuePage = () => {
   const [soldProducts, setSoldProducts] = useState([]);
   const [confirmingOrderId, setConfirmingOrderId] = useState(null);
   const [expandedOrderId, setExpandedOrderId] = useState(null);
-  // Tạm thời không dùng lọc — list tất cả đơn hàng đã bán
+  
+  // Chart states
+  const [chartType, setChartType] = useState('daily'); // 'daily' or 'weekly'
+  const [chartData, setChartData] = useState([]);
+  const [showChart, setShowChart] = useState(true);
+  
+  // Filter states
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     const saved = sessionStorage.getItem('user');
@@ -78,37 +88,44 @@ const RevenuePage = () => {
 
   const userId = user?.id ?? user?.userId ?? null;
 
-  useEffect(() => {
-    let cancelled = false;
+  const loadData = async () => {
     if (userId == null) {
       setLoading(false);
       setRevenueSummary({ totalRevenue: 0, totalProductsSold: 0, period: '' });
       setSoldProducts([]);
+      setChartData([]);
       return;
     }
+    
     setLoading(true);
-    Promise.all([
-      getRevenueSummary(userId, null, null, null),
-      getSoldProducts(userId, null, null, null)
-    ])
-      .then(([summaryData, productsData]) => {
-        if (!cancelled) {
-          setRevenueSummary(summaryData);
-          setSoldProducts(Array.isArray(productsData) ? productsData : []);
-        }
-      })
-      .catch((error) => {
-        console.error('Error loading revenue data:', error);
-        if (!cancelled) {
-          setRevenueSummary({ totalRevenue: 0, totalProductsSold: 0, period: '' });
-          setSoldProducts([]);
-        }
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => { cancelled = true; };
-  }, [userId]);
+    try {
+      const start = startDate || null;
+      const end = endDate || null;
+      
+      const [summaryData, productsData, chartDataResult] = await Promise.all([
+        getRevenueSummary(userId, start, end, null),
+        getSoldProducts(userId, start, end, null),
+        chartType === 'daily' 
+          ? getDailyRevenue(userId, start, end)
+          : getWeeklyRevenue(userId, start, end)
+      ]);
+      
+      setRevenueSummary(summaryData);
+      setSoldProducts(Array.isArray(productsData) ? productsData : []);
+      setChartData(Array.isArray(chartDataResult) ? chartDataResult : []);
+    } catch (error) {
+      console.error('Error loading revenue data:', error);
+      setRevenueSummary({ totalRevenue: 0, totalProductsSold: 0, period: '' });
+      setSoldProducts([]);
+      setChartData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [userId, startDate, endDate, chartType]);
 
   const ordersBySeller = useMemo(() => groupSoldProductsByOrder(soldProducts), [soldProducts]);
 
@@ -129,6 +146,20 @@ const RevenuePage = () => {
     } finally {
       setConfirmingOrderId(null);
     }
+  };
+
+  const handleClearFilters = () => {
+    setStartDate('');
+    setEndDate('');
+  };
+
+  const handleQuickFilter = (days) => {
+    const end = new Date();
+    const start = new Date();
+    start.setDate(start.getDate() - days);
+    
+    setEndDate(end.toISOString().split('T')[0]);
+    setStartDate(start.toISOString().split('T')[0]);
   };
 
   const formatPrice = (price) => {
@@ -197,6 +228,88 @@ const RevenuePage = () => {
                   <div className="summary-value products-value">{summary.totalProductsSold ?? 0} sản phẩm</div>
                 </div>
               </div>
+            </div>
+
+            {/* Filters Section */}
+            <div className="filters-section">
+              <button 
+                className="filters-toggle-btn"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <Calendar size={16} />
+                <span>Lọc theo thời gian</span>
+                {showFilters ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </button>
+              
+              {showFilters && (
+                <div className="filters-content">
+                  <div className="quick-filters">
+                    <button onClick={() => handleQuickFilter(7)}>7 ngày</button>
+                    <button onClick={() => handleQuickFilter(30)}>30 ngày</button>
+                    <button onClick={() => handleQuickFilter(90)}>90 ngày</button>
+                  </div>
+                  
+                  <div className="date-filters">
+                    <div className="date-input-group">
+                      <label>Từ ngày:</label>
+                      <input 
+                        type="date" 
+                        value={startDate} 
+                        onChange={(e) => setStartDate(e.target.value)}
+                      />
+                    </div>
+                    <div className="date-input-group">
+                      <label>Đến ngày:</label>
+                      <input 
+                        type="date" 
+                        value={endDate} 
+                        onChange={(e) => setEndDate(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  
+                  {(startDate || endDate) && (
+                    <button className="clear-filters-btn" onClick={handleClearFilters}>
+                      Xóa bộ lọc
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Chart Section */}
+            <div className="chart-section">
+              <div className="chart-header">
+                <button 
+                  className="chart-toggle-btn"
+                  onClick={() => setShowChart(!showChart)}
+                >
+                  <BarChart3 size={16} />
+                  <span>Biểu đồ doanh thu</span>
+                  {showChart ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </button>
+                
+                {showChart && (
+                  <div className="chart-type-selector">
+                    <button 
+                      className={chartType === 'daily' ? 'active' : ''}
+                      onClick={() => setChartType('daily')}
+                    >
+                      Theo ngày
+                    </button>
+                    <button 
+                      className={chartType === 'weekly' ? 'active' : ''}
+                      onClick={() => setChartType('weekly')}
+                    >
+                      Theo tuần
+                    </button>
+                  </div>
+                )}
+              </div>
+              
+              {showChart && (
+                <RevenueChart data={chartData} type={chartType} />
+              )}
             </div>
           </div>
 

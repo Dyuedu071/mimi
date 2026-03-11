@@ -39,3 +39,41 @@ export async function getSoldProducts(userId, startDate, endDate, category) {
 
   return response.json();
 }
+
+export async function getDailyRevenue(userId, startDate, endDate) {
+  const params = new URLSearchParams();
+  if (startDate) params.append('startDate', startDate);
+  if (endDate) params.append('endDate', endDate);
+
+  const response = await fetch(`${API_BASE_URL}/revenue/daily/${userId}?${params}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Không thể tải thống kê doanh thu theo ngày');
+  }
+
+  return response.json();
+}
+
+export async function getWeeklyRevenue(userId, startDate, endDate) {
+  const params = new URLSearchParams();
+  if (startDate) params.append('startDate', startDate);
+  if (endDate) params.append('endDate', endDate);
+
+  const response = await fetch(`${API_BASE_URL}/revenue/weekly/${userId}?${params}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Không thể tải thống kê doanh thu theo tuần');
+  }
+
+  return response.json();
+}
