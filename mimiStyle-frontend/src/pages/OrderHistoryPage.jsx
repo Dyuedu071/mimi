@@ -70,7 +70,7 @@ function formatDate(isoString) {
 }
 
 const STATUS_LABEL = {
-  pending: 'Chờ xử lý',
+  pending: 'Chờ xác nhận thanh toán',
   confirmed: 'Đã xác nhận',
   shipping: 'Đang vận chuyển',
   completed: 'Đã giao',

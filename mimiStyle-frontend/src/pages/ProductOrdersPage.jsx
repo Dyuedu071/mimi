@@ -102,7 +102,7 @@ const ProductOrdersPage = () => {
 
   const handleConfirmOrder = async (orderId) => {
     if (!orderId) return;
-    const ok = window.confirm('Xác nhận đơn hàng này sẽ chuyển trạng thái sang "Đang vận chuyển". Bạn có chắc muốn xác nhận?');
+    const ok = window.confirm('Xác nhận đã nhận được thanh toán? Đơn hàng sẽ chuyển sang trạng thái "Đang vận chuyển".');
     if (!ok) return;
     try {
       setConfirmingOrderId(orderId);
@@ -112,6 +112,7 @@ const ProductOrdersPage = () => {
           p.orderId === orderId ? { ...p, orderStatus: 'SHIPPING' } : p
         )
       );
+      alert('✅ Đã xác nhận thanh toán và chuyển đơn hàng sang trạng thái "Đang vận chuyển"');
     } catch (err) {
       alert(err?.message || 'Không thể cập nhật trạng thái đơn hàng');
     } finally {
@@ -152,11 +153,14 @@ const ProductOrdersPage = () => {
 
   const getStatusLabel = (status) => {
     const s = (status || '').toUpperCase();
-    if (s === 'PENDING') return 'Chờ xử lý';
+    if (s === 'PENDING') return 'Chờ xác nhận thanh toán';
     if (s === 'CONFIRMED') return 'Đã xác nhận';
     if (s === 'SHIPPING') return 'Đang vận chuyển';
     if (s === 'COMPLETED') return 'Giao hàng thành công';
     if (s === 'CANCELLED') return 'Đã hủy';
+    if (s === 'RENTING') return 'Đang thuê';
+    if (s === 'RETURNED') return 'Đã trả hàng';
+    if (s === 'OVERDUE') return 'Quá hạn trả';
     return status || '—';
   };
 
@@ -232,7 +236,7 @@ const ProductOrdersPage = () => {
                         disabled={confirmingOrderId === order.orderId}
                       >
                         <PackageCheck size={16} />
-                        <span>Xác nhận đơn hàng</span>
+                        <span>Xác nhận đã nhận thanh toán</span>
                       </button>
                     )}
                     {isShipping && (

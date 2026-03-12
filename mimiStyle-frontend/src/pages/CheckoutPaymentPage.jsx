@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Truck, Banknote, CreditCard, Wallet } from 'lucide-react';
+import { Truck, Banknote, CreditCard } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { useCart } from '../context/CartContext';
 import { addOrder } from '../utils/orderHistory';
 import { createOrder as createOrderApi } from '../api/order';
+import qrCodeImg from '../assets/qr.jpg';
 import '../styles/CheckoutPaymentPage.css';
 
 const SHIPPING_OPTIONS = [
@@ -12,9 +13,8 @@ const SHIPPING_OPTIONS = [
 ];
 
 const PAYMENT_OPTIONS = [
-  { id: 'cod', name: 'Thanh toán khi giao hàng (COD)', icon: Banknote },
-  { id: 'vnpay', name: 'Thẻ ATM/Visa/Master/JCB/QR Pay qua cổng VNPAY', icon: CreditCard },
-  { id: 'other', name: 'Phương thức thanh toán khác', icon: Wallet },
+  { id: 'cod', name: 'Thanh toán khi nhận hàng (COD)', icon: Banknote },
+  { id: 'qr', name: 'Chuyển khoản qua QR Code', icon: CreditCard },
 ];
 
 function formatPrice(price) {
@@ -78,7 +78,7 @@ export default function CheckoutPaymentPage() {
     const saved = sessionStorage.getItem('user');
     const userId = saved ? (() => { try { const u = JSON.parse(saved); return u?.id ?? u?.userId ?? null; } catch { return null; } })() : null;
     const formData = form ?? {};
-    const paymentMethodMap = { cod: 'COD', vnpay: 'VNPAY', other: 'BANK_TRANSFER' };
+    const paymentMethodMap = { cod: 'COD', qr: 'BANK_TRANSFER' };
 
     if (userId) {
       const orderPayload = {
@@ -185,6 +185,24 @@ export default function CheckoutPaymentPage() {
                   );
                 })}
               </div>
+              
+              {/* Hiển thị QR Code khi chọn chuyển khoản */}
+              {paymentId === 'qr' && (
+                <div className="qr-code-section">
+                  <div className="qr-code-container">
+                    <img src={qrCodeImg} alt="QR Code thanh toán" className="qr-code-image" />
+                    <p className="qr-code-note">Quét mã QR để chuyển khoản</p>
+                    <p className="qr-code-amount">Số tiền: {formatPrice(total)}</p>
+                    <p className="qr-code-instruction">
+                      💡 Sau khi chuyển khoản thành công:<br/>
+                      1. Chụp ảnh bill/biên lai chuyển khoản<br/>
+                      2. Nhấn "Xác nhận đã chuyển khoản" bên dưới<br/>
+                      3. Gửi ảnh bill cho shop qua Zalo/Facebook để xác nhận<br/>
+                      4. Đơn hàng sẽ được xử lý sau khi shop xác nhận thanh toán
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
 
@@ -274,8 +292,20 @@ export default function CheckoutPaymentPage() {
             </div>
 
             <button type="button" className="payment-complete-btn" onClick={handleCompleteOrder}>
-              Hoàn tất đơn hàng
+              {paymentId === 'qr' ? 'Xác nhận đã chuyển khoản' : 'Hoàn tất đơn hàng'}
             </button>
+            
+            {paymentId === 'qr' && (
+              <p style={{ 
+                fontSize: '0.85rem', 
+                color: '#6b7280', 
+                textAlign: 'center', 
+                marginTop: '0.75rem',
+                lineHeight: '1.5'
+              }}>
+                ⚠️ Đơn hàng sẽ ở trạng thái "Chờ xác nhận" cho đến khi shop xác nhận đã nhận được tiền chuyển khoản.
+              </p>
+            )}
           </section>
         </div>
       </div>
