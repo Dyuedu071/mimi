@@ -219,6 +219,7 @@ public class DataInitializationService {
         
         // Initialize additional users
         initializeAdditionalUsers();
+        initializeAdditionalUsers2();
     }
     
     private void initializeAdditionalUsers() {
