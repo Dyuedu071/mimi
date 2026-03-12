@@ -224,75 +224,279 @@ public class DataInitializationService {
     
     private void initializeAdditionalUsers() {
         String[][] userData = {
-            {"nguyenngocquynh27092003", "nguyenngocquynh27092003@gmail.com", "123123", "Nguyễn Ngọc Quỳnh", "0865349170", "2000-01-01", "Hà Nội"},
-            {"phanhuyentran3204", "phanhuyentran3204@gmail.com", "123123", "Phan Huyền Trân", "0988710881", "2000-01-01", "Hà Nội"},
-            {"hoangquangdldcarchive", "hoangquangdldcarchive@gmail.com", "123123", "Hoàng Hữu Quang", "0989503003", "2000-01-01", "Hà Nội"},
-            {"lamquangvinh2311", "lamquangvinh2311@gmail.com", "123123", "Lâm Quang Vinh", "0966590824", "2000-01-01", "Hà Nội"},
-            {"tranhuyn24", "tranhuyn24@gmail.com", "123123", "Trần Huyền", "0837869666", "2000-01-01", "Hà Nội"},
-            {"nguyenkhoi5804", "nguyenkhoi5804@gmail.com", "123123", "Nguyễn Hữu Khôi Nguyên", "0962895165", "2000-01-01", "Hà Nội"},
-            {"nguyenanh2004yb", "nguyenanh2004yb@gmail.com", "123123", "Nguyễn Thị Châu Anh", "0918352403", "2000-01-01", "Hà Nội"},
-            {"tunganhthcslb2005", "tunganhthcslb2005@gmail.com", "123123", "Nguyễn Tùng Anh", "0963698005", "2000-01-01", "Hà Nội"},
-            {"dinh6661", "dinh6661@gmail.com", "123123", "Đinh Tiến Mạnh", "0829515384", "2000-01-01", "Hà Nội"},
-            {"dbrian3103", "dbrian3103@gmail.com", "123123", "Nguyễn Minh Đạt", "0936770627", "2000-01-01", "Hà Nội"},
-            {"anhnmhe171286", "anhnmhe171286@fpt.edu.vn", "123123", "Nguyễn Minh Anh", "0582710075", "2000-01-01", "Hà Nội"},
-            {"lehoanglong3304", "lehoanglong3304@gmail.com", "123123", "Lê Hoàng Long", "0868778033", "2000-01-01", "Hà Nội"},
-            {"qanhthanhcong05", "qanhthanhcong05@gmail.com", "123123", "Trần Quang Anh", "0965892243", "2000-01-01", "Hà Nội"},
-            {"minhletruong22", "minhletruong22@gmail.com", "123123", "Lê Trường Minh", "0867931656", "2000-01-01", "Hà Nội"},
-            {"anhndhs180835", "anhndhs180835@fpt.edu.vn", "123123", "Nguyễn Đức Anh", "0961276439", "2000-01-01", "Hà Nội"},
-            {"vutridung05012005", "vutridung05012005@gmail.com", "123123", "vu tri dung", "0397096500", "2000-01-01", "Hà Nội"},
-            {"jeonjungshock19", "jeonjungshock19@gmail.com", "123123", "Bùi Chi Linh", "0947722692", "2000-01-01", "Hà Nội"},
-            {"tanamson26092004", "tanamson26092004@gmail.com", "123123", "Tạ Nam Sơn", "0374767604", "2000-01-01", "Hà Nội"},
-            {"daizlemaico05", "Daizlemaico05@gmail.com", "123123", "Trần Quang Đạt", "0983270405", "2000-01-01", "Hà Nội"},
-            {"daihenshin168", "daihenshin168@gmail.com", "123123", "Nguyễn Hoành Đạt", "0986673953", "2000-01-01", "Hà Nội"},
-            {"appp200555", "appp200555@gmail.com", "123123", "Nguyễn Thái Bảo", "0969482816", "2000-01-01", "Hà Nội"},
-            {"nle6276", "nle6276@gmail.com", "123123", "Nguyễn Thị Thu Lệ", "0337282462", "2000-01-01", "Hà Nội"},
-            {"nhingimik", "nhingimik@gmail.com", "123123", "Nguyễn Giang Đông", "0989398211", "2000-01-01", "Hà Nội"},
-            {"tam040204", "Tam040204@gmail.com", "123123", "Đỗ Ánh Tâm", "0862555024", "2000-01-01", "Hà Nội"},
-            {"nguy", "nguy", "123123", "Nguyễn Thị Hồng Mỹ", "0865197525", "2000-01-01", "Hà Nội"},
-            {"thaovanluong0209", "thaovanluong0209@gmail.com", "123123", "Lương Thảo Vân", "0981566282", "2000-01-01", "Hà Nội"},
-            {"anhdq2607", "anhdq2607@gmail.com", "123123", "Đoàn Nguyễn Quang Anh", "0986481313", "2000-01-01", "Hà Nội"},
-            {"nguyenthithanhnga2202", "nguyenthithanhnga2202@gmail.com", "123123", "Nguyễn Thị Thanh Nga", "0978275118", "2000-01-01", "Hà Nội"},
-            {"ducto35", "ducto35@gmail.com", "123123", "Nguyễn Vũ Đức", "0369455756", "2000-01-01", "Hà Nội"},
-            {"luucongdat2004", "luucongdat2004@gmail.com", "123123", "Lưu Công Đạt", "0868213183", "2000-01-01", "Hà Nội"},
-            {"huyphuoc204", "huyphuoc204@gmail.com", "123123", "Nguyễn Huy Phước", "0385949616", "2000-01-01", "Hà Nội"},
-            {"ranin_fox_87", "ranin.fox.87@gmail.com", "123123", "Bùi Quang Anh", "0916214345", "2000-01-01", "Hà Nội"},
-            {"binhleosu2412", "binhleosu2412@gmail.com", "123123", "Lê Tiến Bình", "0974333584", "2000-01-01", "Hà Nội"},
-            {"hiepledai02", "hiepledai02@gmail.com", "123123", "Lê Đại Hiệp", "0398704357", "2000-01-01", "Hà Nội"},
-            {"vuoanh141", "vuoanh141@gmail.com", "123123", "Vũ Thị Kim Oanh", "0386547913", "2000-01-01", "Hà Nội"},
-            {"baoanhhmc", "baoanhhmc@gmail.com", "123123", "Phạm Hà Bảo Anh", "0834140603", "2000-01-01", "Hà Nội"},
-            {"phamduchieu1407", "phamduchieu1407@gmail.com", "123123", "Phạm Đức Hiếu", "0943425679", "2000-01-01", "Hà Nội"},
-            {"vtttrang12062005", "vtttrang12062005@gmail.com", "123123", "Vũ Thị Thu Trang", "0971381612", "2000-01-01", "Hà Nội"},
-            {"thinhnphe181767", "thinhnphe181767@fpt.edu.vn", "123123", "Nguyễn Phú Thịnh", "0357159967", "2000-01-01", "Hà Nội"},
-            {"khanhxuan1507", "khanhxuan1507@gmail.com", "123123", "Đỗ Khánh Xuân", "0866103564", "2000-01-01", "Hà Nội"},
-            {"tungduongle0610", "tungduongle0610@gmail.com", "123123", "Lê Nguyễn Tùng Dương", "0979051629", "2000-01-01", "Hà Nội"},
-            {"dangthanhbinh135", "dangthanhbinh135@gmail.com", "123123", "Đặng Thanh Bình", "0832882005", "2000-01-01", "Hà Nội"},
-            {"ntramanh1204", "ntramanh1204@gmail.com", "123123", "Nguyễn Trâm Anh", "0975571434", "2000-01-01", "Hà Nội"},
-            {"tu78hy", "tu78hy@gmail.com", "123123", "Nguyễn Anh Tú", "0332107314", "2000-01-01", "Hà Nội"},
-            {"mainamdepjai", "mainamdepjai@gmail.com", "123123", "Mai Quốc Vượng", "0964946955", "2000-01-01", "Hà Nội"},
-            {"minhquanpham1411", "minhquanpham1411@gmail.com", "123123", "Phạm Minh Quân", "0829877109", "2000-01-01", "Hà Nội"},
-            {"giahuy31639801", "giahuy31639801@gmail.com", "123123", "Bùi Gia Huy", "0985643876", "2000-01-01", "Hà Nội"},
-            {"ntvy04", "Ntvy04@gmail.com", "123123", "Nguyễn Thảo Vy", "0338263886", "2000-01-01", "Hà Nội"},
-            {"hohahnhh", "Hohahnhh@gmail.com", "123123", "Nguyễn Phan Hoàn", "0912057280", "2000-01-01", "Hà Nội"},
-            {"minhhieus947", "minhhieus947@gmail.com", "123123", "Nguyễn Minh Hiếu", "0387915518", "2000-01-01", "Hà Nội"},
-            {"ngocdiep01258", "ngocdiep01258@gmail.com", "123123", "Nguyễn Thị Ngọc Diệp", "0389198205", "2000-01-01", "Hà Nội"},
-            {"ngohuyenngoc89", "ngohuyenngoc89@gmail.com", "123123", "Ngô Huyền Ngọc", "0971304858", "2000-01-01", "Hà Nội"},
-            {"sonhs8a", "Sonhs8a@gmail.com", "123123", "Giang Quang Sơn", "0338024663", "2000-01-01", "Hà Nội"},
-            {"namkhanhgl1108", "namkhanhgl1108@gmail.com", "123123", "Lại Nam Khánh", "0869622777", "2000-01-01", "Hà Nội"},
-            {"linhtd_hdg", "Linhtd.hdg@gmail.com", "123123", "Trần Diệu Linh", "0911885366", "2000-01-01", "Hà Nội"},
-            {"linhhy2003", "Linhhy2003@gmail.com", "123123", "Vũ Khánh Linh", "0352123801", "2000-01-01", "Hà Nội"},
-            {"baấnguong1122004", "Baấnguong1122004@gmail.com", "123123", "Lê Thị Thanh Hằng", "0367123217", "2000-01-01", "Hà Nội"},
-            {"uyen57868", "uyen57868@gmail.com", "123123", "Nguyễn Phương Uyên", "0372710976", "2000-01-01", "Hà Nội"},
-            {"khanhly061003", "khanhly061003@gmail.com", "123123", "Đặng Ngọc Khánh Ly", "0399626523", "2000-01-01", "Hà Nội"},
-            {"minhthan189", "minhthan189@gmail.com", "123123", "Thân Tuệ Minh", "0387396711", "2000-01-01", "Hà Nội"},
-            {"haoca1020", "haoca1020@gmail.com", "123123", "Vũ Minh Hiển", "0367628181", "2000-01-01", "Hà Nội"},
-            {"phuonghacao2574", "phuonghacao2574@gmail.com", "123123", "Cao Thị Phương Hà", "0377269016", "2000-01-01", "Hà Nội"},
-            {"hoangdvmhe170717", "hoangdvmhe170717@fpt.edu.vn", "123123", "Dương Vũ Minh Hoàng", "0962606188", "2000-01-01", "Hà Nội"},
-            {"longhg123ll", "longhg123ll@gmail.com", "123123", "Ngô Hoàng Long", "0949238756", "2000-01-01", "Hà Nội"},
-            {"kimanhyb198x", "kimanhyb198x@gmail.con", "123123", "Vũ Ngọc Hải", "0326575494", "2000-01-01", "Hà Nội"},
-            {"kieuloc3101", "kieuloc3101@gmail.com", "123123", "Kiều Bảo Lộc", "0367488155", "2000-01-01", "Hà Nội"},
-            {"phanthithaovan2911", "Phanthithaovan2911@gmail.com", "123123", "PT Thảo Vân", "086559898", "2000-01-01", "Hà Nội"},
-            {"ntuonganh23", "ntuonganh23@gail.com", "123123", "Nguyễn Tường Anh", "0988256796", "2000-01-01", "Hà Nội"},
-            {"lequynhanh2806s2", "lequynhanh2806s2@gmail.com", "123123", "Lê Quỳnh Anh", "0355987238", "2000-01-01", "Hà Nội"}
+           
+  {
+    "username": "189otc",
+    "email": "189otc@gmail.com",
+    "password": "123123",
+    "fullName": "Lương Thái Dương",
+    "phoneNumber": "0968864707",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "nguyentramy368222",
+    "email": "nguyentramy368222@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Trà My",
+    "phoneNumber": "0981268505",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "tuanson1092",
+    "email": "tuanson1092@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Cao Tuấn Sơn",
+    "phoneNumber": "0362347336",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "dongnvhe180365",
+    "email": "dongnvhe180365@fpt.edu.vn",
+    "password": "123123",
+    "fullName": "Nguyễn Văn Đông",
+    "phoneNumber": "0854675789",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "phunganh1912006",
+    "email": "phunganh1912006@gmail.com",
+    "password": "123123",
+    "fullName": "Phùng Tú Anh",
+    "phoneNumber": "0359063688",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "ntptrang207",
+    "email": "ntptrang207@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Thị Phương Trang",
+    "phoneNumber": "0981558207",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "duclinh26hg",
+    "email": "duclinh26hg@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Hà Minh Đức",
+    "phoneNumber": "0337270693",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "vuhoangtung1211",
+    "email": "vuhoangtung1211@gmail.com",
+    "password": "123123",
+    "fullName": "Vũ Hoàng Tùng",
+    "phoneNumber": "0337201556",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "nhid68313",
+    "email": "nhid68313@gmail.com",
+    "password": "123123",
+    "fullName": "Đỗ Quỳnh Nhi",
+    "phoneNumber": "0868088395",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "vungocmobeo",
+    "email": "vungocmobeo@gmail.com",
+    "password": "123123",
+    "fullName": "Vũ Ngọc Hải Đăng",
+    "phoneNumber": "0858194668",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "dattrinh2804",
+    "email": "dattrinh2804@gmail.com",
+    "password": "123123",
+    "fullName": "Trịnh Thành Đạt",
+    "phoneNumber": "0816535018",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "nguyentrananhdung291",
+    "email": "nguyentrananhdung291@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Trần Anh Dũng",
+    "phoneNumber": "0862787368",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "thuongntdhs186582",
+    "email": "thuongntdhs186582@fpt.edu.vn",
+    "password": "123123",
+    "fullName": "Nguyễn Thị Đoàn Thương",
+    "phoneNumber": "0985799130",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "bethinh3333",
+    "email": "bethinh3333@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Ngọc Đức Thịnh",
+    "phoneNumber": "0868597750",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "nguyenvuminhtrang1862007",
+    "email": "nguyenvuminhtrang1862007@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Vũ Minh Trang",
+    "phoneNumber": "0377176165",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "ngocanhhhh241105",
+    "email": "ngocanhhhh241105@gmail.com",
+    "password": "123123",
+    "fullName": "Lê Ngọc Anh",
+    "phoneNumber": "0968163504",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "nguyenvukhanhlinh2212",
+    "email": "nguyenvukhanhlinh2212@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Vũ Khánh Linh",
+    "phoneNumber": "0963756200",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "levanhung1752006",
+    "email": "levanhung1752006@gmail.com",
+    "password": "123123",
+    "fullName": "Lê Văn Hùng",
+    "phoneNumber": "0355324577",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "camlinhtrann239",
+    "email": "camlinhtrann239@gmail.com",
+    "password": "123123",
+    "fullName": "Ngô Minh Quân",
+    "phoneNumber": "0949554569",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "jeonjungshock19",
+    "email": "jeonjungshock19@gmail.com",
+    "password": "123123",
+    "fullName": "Bùi Chi Linh",
+    "phoneNumber": "0947722692",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "vu735558",
+    "email": "vu735558@gmail.com",
+    "password": "123123",
+    "fullName": "Vũ Đình Hoàng",
+    "phoneNumber": "0352491660",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "hoanganhquach817",
+    "email": "hoanganhquach817@gmail.com",
+    "password": "123123",
+    "fullName": "QUÁCH HOÀNG ANH",
+    "phoneNumber": "0966574603",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "ngoccyen06",
+    "email": "ngoccyen06@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Ngọc Yến",
+    "phoneNumber": "0983710620",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "hainamking2k7",
+    "email": "hainamking2k7@gmail.com",
+    "password": "123123",
+    "fullName": "Đào Hải Nam",
+    "phoneNumber": "0363828382",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "minhhoangaov",
+    "email": "minhhoangaov@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Hoàng Minh",
+    "phoneNumber": "0986082623",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "phamhuy08280",
+    "email": "phamhuy08280@gmail.com",
+    "password": "123123",
+    "fullName": "Phạm Gia Huy",
+    "phoneNumber": "0774341368",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "qtrang0110k6",
+    "email": "qtrang0110k6@gmail.com",
+    "password": "123123",
+    "fullName": "Nguyễn Quỳnh Trang",
+    "phoneNumber": "0368123190",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "canhavy24",
+    "email": "canhavy24@gmail.com",
+    "password": "123123",
+    "fullName": "Cấn Thị Hà Vi",
+    "phoneNumber": "0395230948",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "vh02012006",
+    "email": "vh02012006@gmail.com",
+    "password": "123123",
+    "fullName": "Đỗ Bùi Việt Hoàng",
+    "phoneNumber": "0965284598",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  },
+  {
+    "username": "chuongdangkt250",
+    "email": "chuongdangkt250@gmail.com",
+    "password": "123123",
+    "fullName": "Đặng Hoàng Chương",
+    "phoneNumber": "0339282991",
+    "birthday": "2000-01-01",
+    "address": "Hà Nội"
+  }
+
+           
         };
         
         int addedCount = 0;
