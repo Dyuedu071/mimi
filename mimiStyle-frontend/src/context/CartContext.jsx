@@ -79,6 +79,8 @@ export function CartProvider({ children }) {
       colorIndex,
       sizeIndex,
       imageSrc,
+      orderType = 'BUY', // 'BUY' hoặc 'RENT'
+      rentDuration = 1,  // Số lượng đơn vị thuê
     } = payload;
     setItems((prev) => {
       const idx = prev.findIndex(
@@ -98,6 +100,7 @@ export function CartProvider({ children }) {
           deposit,
           buyPrice: product?.buyPrice,
           rentPrice: product?.rentPrice,
+          rentUnit: product?.rentUnit,
           imageSrc: imageSrc ?? (product?.images?.[0] ? (typeof product.images[0] === 'string' ? `/img-product/${product.images[0]}` : `/img-product/${product.images[0].imageUrl}`) : null),
         },
         quantity,
@@ -105,6 +108,8 @@ export function CartProvider({ children }) {
         sizeLabel: sizeLabel || '',
         colorIndex,
         sizeIndex,
+        orderType,
+        rentDuration,
       };
       if (idx >= 0) {
         const next = [...prev];

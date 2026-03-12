@@ -53,11 +53,15 @@ export default function CheckoutPaymentPage() {
   const shipping = SHIPPING_OPTIONS.find((s) => s.id === shippingId) || SHIPPING_OPTIONS[0];
   const shippingFee = shipping?.fee ?? 0;
   const subtotal = items.reduce((s, i) => {
-    const itemPrice = i.product?.price ?? 0;
-    const itemDeposit = i.product?.deposit ?? 0;
-    // Nếu là sản phẩm cho thuê (có deposit), tính cả deposit
-    const totalItemPrice = itemDeposit > 0 ? itemPrice + itemDeposit : itemPrice;
-    return s + totalItemPrice * i.quantity;
+    if (i.orderType === 'RENT') {
+      const rentPrice = i.product?.rentPrice ?? 0;
+      const deposit = i.product?.deposit ?? 0;
+      const duration = i.rentDuration ?? 1;
+      return s + (rentPrice * duration + deposit) * i.quantity;
+    } else {
+      const buyPrice = i.product?.buyPrice ?? i.product?.price ?? 0;
+      return s + buyPrice * i.quantity;
+    }
   }, 0);
   const discount = appliedVoucher ? Number(appliedVoucher.discountValue) : 0;
   const total = Math.max(0, subtotal - discount + shippingFee);
@@ -109,7 +113,12 @@ export default function CheckoutPaymentPage() {
           shippingFee: Number(shippingFee) || 0,
           discountAmount: Number(discount) || 0,
           paymentMethod: paymentMethodMap[paymentId] || 'COD',
-          items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
+          items: items.map((i) => ({ 
+            productId: i.productId, 
+            quantity: i.quantity,
+            orderType: i.orderType || 'BUY',
+            rentDuration: i.rentDuration || null,
+          })),
         });
       } catch (err) {
         console.warn('API tạo đơn hàng thất bại (đơn đã lưu local):', err?.message);
@@ -186,17 +195,32 @@ export default function CheckoutPaymentPage() {
               {items.map((item) => {
                 const imgSrc = item.product?.imageSrc || 'https://via.placeholder.com/80x80/f0f0f0/666?text=SP';
                 const variantText = [item.colorLabel, item.sizeLabel].filter(Boolean).join(' / ') || '';
-                const itemPrice = item.product?.price ?? 0;
-                const itemDeposit = item.product?.deposit ?? 0;
-                const totalItemPrice = itemDeposit > 0 ? itemPrice + itemDeposit : itemPrice;
-                const lineTotal = totalItemPrice * item.quantity;
+                
+                let lineTotal = 0;
+                let priceDisplay = '';
+                if (item.orderType === 'RENT') {
+                  const rentPrice = item.product?.rentPrice ?? 0;
+                  const deposit = item.product?.deposit ?? 0;
+                  const duration = item.rentDuration ?? 1;
+                  const rentUnit = item.product?.rentUnit === 'DAY' ? 'ngày' : item.product?.rentUnit === 'WEEK' ? 'tuần' : 'tháng';
+                  lineTotal = (rentPrice * duration + deposit) * item.quantity;
+                  priceDisplay = `Thuê ${duration} ${rentUnit}`;
+                } else {
+                  const buyPrice = item.product?.buyPrice ?? item.product?.price ?? 0;
+                  lineTotal = buyPrice * item.quantity;
+                  priceDisplay = 'Mua';
+                }
                 return (
                   <div key={`${item.productId}-${item.colorIndex}-${item.sizeIndex}`} className="payment-summary-item">
                     <img className="payment-summary-img" src={imgSrc} alt={item.product?.name} />
                     <div className="payment-summary-info">
                       <div className="payment-summary-name">{item.product?.name}</div>
                       {variantText && <div className="payment-summary-variant">{variantText}</div>}
-                      {itemDeposit > 0 && (
+                      {item.orderType === 'RENT' ? (
+                        <div className="payment-summary-deposit">
+                          Thuê {item.rentDuration} {item.product?.rentUnit === 'DAY' ? 'ngày' : item.product?.rentUnit === 'WEEK' ? 'tuần' : 'tháng'}: {formatPrice(itemPrice * (item.rentDuration || 1))} + Cọc: {formatPrice(itemDeposit)}
+                        </div>
+                      ) : itemDeposit > 0 && (
                         <div className="payment-summary-deposit">
                           Giá thuê: {formatPrice(itemPrice)} + Cọc: {formatPrice(itemDeposit)}
                         </div>

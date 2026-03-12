@@ -23,6 +23,8 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const [user, setUser] = useState(null);
+  const [orderType, setOrderType] = useState('BUY'); // 'BUY' hoặc 'RENT'
+  const [rentDuration, setRentDuration] = useState(1);
   const { addToCart, isInCart } = useCart();
 
   const imageMap = {
@@ -49,6 +51,17 @@ export default function ProductDetailPage() {
   useEffect(() => {
     loadProduct();
   }, [id]);
+
+  useEffect(() => {
+    // Tự động chọn loại giao dịch dựa trên tradeType
+    if (product) {
+      if (product.tradeType === 'BUY_ONLY') {
+        setOrderType('BUY');
+      } else if (product.tradeType === 'RENT_ONLY') {
+        setOrderType('RENT');
+      }
+    }
+  }, [product]);
 
   const loadProduct = async () => {
     try {
@@ -119,6 +132,8 @@ export default function ProductDetailPage() {
       colorIndex: selectedColor,
       sizeIndex: selectedSize,
       imageSrc: getProductImageSrc(product),
+      orderType,
+      rentDuration,
     });
   };
 
@@ -189,19 +204,42 @@ export default function ProductDetailPage() {
               <span className="status-badge available">Còn hàng</span>
             </div>
 
+            {/* Chọn loại giao dịch nếu sản phẩm hỗ trợ cả mua và thuê */}
+            {product.tradeType === 'BOTH' && (
+              <div className="product-option-group">
+                <label className="option-label">Loại giao dịch</label>
+                <div className="trade-type-options">
+                  <button
+                    className={`trade-type-btn ${orderType === 'BUY' ? 'selected' : ''}`}
+                    onClick={() => setOrderType('BUY')}
+                  >
+                    Mua
+                  </button>
+                  <button
+                    className={`trade-type-btn ${orderType === 'RENT' ? 'selected' : ''}`}
+                    onClick={() => setOrderType('RENT')}
+                  >
+                    Thuê
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="product-price">
-              {product.buyPrice ? (
+              {(orderType === 'BUY' || product.tradeType === 'BUY_ONLY') && product.buyPrice ? (
                 formatPrice(product.buyPrice)
               ) : (
                 <div className="rent-price-info">
-                  <div className="rent-price-main">{formatPrice(product.rentPrice || 0)}</div>
+                  <div className="rent-price-main">
+                    {formatPrice(product.rentPrice || 0)}/{product.rentUnit === 'DAY' ? 'ngày' : product.rentUnit === 'WEEK' ? 'tuần' : 'tháng'}
+                  </div>
                   {product.deposit && (
                     <div className="deposit-info">
                       + Cọc: {formatPrice(product.deposit)}
                     </div>
                   )}
                   <div className="total-rent-info">
-                    Tổng thanh toán: {formatPrice((product.rentPrice || 0) + (product.deposit || 0))}
+                    Tổng thanh toán: {formatPrice((product.rentPrice || 0) * rentDuration + (product.deposit || 0))}
                   </div>
                 </div>
               )}
@@ -238,6 +276,30 @@ export default function ProductDetailPage() {
               </div>
               <a href="#" className="size-guide-link">Hướng dẫn chọn size</a>
             </div>
+
+            {/* Thời gian thuê (chỉ hiện khi thuê) */}
+            {(orderType === 'RENT' || product.tradeType === 'RENT_ONLY') && (
+              <div className="product-option-group">
+                <label className="option-label">
+                  Thời gian thuê ({product.rentUnit === 'DAY' ? 'ngày' : product.rentUnit === 'WEEK' ? 'tuần' : 'tháng'})
+                </label>
+                <div className="quantity-selector">
+                  <button className="quantity-btn" onClick={() => setRentDuration(Math.max(1, rentDuration - 1))}>
+                    <Minus size={16} />
+                  </button>
+                  <input
+                    type="number"
+                    className="quantity-input"
+                    value={rentDuration}
+                    onChange={(e) => setRentDuration(Math.max(1, parseInt(e.target.value) || 1))}
+                    min="1"
+                  />
+                  <button className="quantity-btn" onClick={() => setRentDuration(rentDuration + 1)}>
+                    <Plus size={16} />
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Quantity */}
             <div className="product-option-group">

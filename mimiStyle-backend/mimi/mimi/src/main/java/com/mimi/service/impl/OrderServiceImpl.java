@@ -43,20 +43,49 @@ public class OrderServiceImpl implements OrderService {
 
         BigDecimal totalAmount = BigDecimal.ZERO;
         List<OrderItem> orderItems = new ArrayList<>();
+        boolean hasRentalItem = false;
+        Integer maxRentDuration = null;
 
         for (CreateOrderRequest.OrderItemRequest itemReq : request.getItems()) {
             Product product = productRepository.findById(itemReq.getProductId())
                     .orElseThrow(() -> new IllegalArgumentException("Product not found: " + itemReq.getProductId()));
             int qty = itemReq.getQuantity() != null && itemReq.getQuantity() > 0 ? itemReq.getQuantity() : 1;
-            BigDecimal price = product.getBuyPrice() != null ? product.getBuyPrice() : BigDecimal.ZERO;
-            BigDecimal lineTotal = price.multiply(BigDecimal.valueOf(qty));
-            totalAmount = totalAmount.add(lineTotal);
+            
+            // Xác định loại đơn hàng và giá
+            OrderType orderType = OrderType.BUY;
+            BigDecimal price = BigDecimal.ZERO;
+            Integer rentDuration = null;
+            
+            if ("RENT".equalsIgnoreCase(itemReq.getOrderType())) {
+                orderType = OrderType.RENT;
+                hasRentalItem = true;
+                price = product.getRentPrice() != null ? product.getRentPrice() : BigDecimal.ZERO;
+                rentDuration = itemReq.getRentDuration() != null && itemReq.getRentDuration() > 0 
+                    ? itemReq.getRentDuration() : 1;
+                
+                // Tính giá thuê theo thời gian
+                BigDecimal rentalPrice = price.multiply(BigDecimal.valueOf(rentDuration));
+                // Cộng thêm tiền cọc
+                BigDecimal deposit = product.getDeposit() != null ? product.getDeposit() : BigDecimal.ZERO;
+                BigDecimal lineTotal = rentalPrice.add(deposit).multiply(BigDecimal.valueOf(qty));
+                totalAmount = totalAmount.add(lineTotal);
+                
+                // Lưu thời gian thuê dài nhất để tính ngày trả
+                if (maxRentDuration == null || rentDuration > maxRentDuration) {
+                    maxRentDuration = rentDuration;
+                }
+            } else {
+                price = product.getBuyPrice() != null ? product.getBuyPrice() : BigDecimal.ZERO;
+                BigDecimal lineTotal = price.multiply(BigDecimal.valueOf(qty));
+                totalAmount = totalAmount.add(lineTotal);
+            }
 
             OrderItem oi = new OrderItem();
             oi.setProduct(product);
             oi.setQuantity(qty);
             oi.setPrice(price);
-            oi.setOrderType(OrderType.BUY);
+            oi.setOrderType(orderType);
+            oi.setRentDuration(rentDuration);
             oi.setVariant(null);
             orderItems.add(oi);
         }
@@ -80,6 +109,13 @@ public class OrderServiceImpl implements OrderService {
         order.setShippingAddress(request.getShippingAddress() != null ? request.getShippingAddress() : "");
         order.setNote(request.getNote());
         order.setStatus(com.mimi.domain.enums.OrderStatus.PENDING);
+        
+        // Tính ngày trả hàng dự kiến cho đơn thuê
+        if (hasRentalItem && maxRentDuration != null) {
+            // Giả sử đơn vị thuê là ngày (có thể cải thiện bằng cách lấy từ product.rentUnit)
+            order.setExpectedReturnDate(java.time.LocalDateTime.now().plusDays(maxRentDuration));
+        }
+        order.setDepositRefunded(false);
 
         for (OrderItem oi : orderItems) {
             oi.setOrder(order);
@@ -145,5 +181,42 @@ public class OrderServiceImpl implements OrderService {
             order.getFinalAmount(),
             itemResponses
         );
+    }
+
+    @Override
+    @Transactional
+    public void returnRentalOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        
+        // Kiểm tra xem có phải đơn thuê không
+        boolean hasRentalItem = order.getOrderItems().stream()
+                .anyMatch(item -> item.getOrderType() == OrderType.RENT);
+        
+        if (!hasRentalItem) {
+            throw new IllegalArgumentException("Đơn hàng này không phải đơn thuê");
+        }
+        
+        order.setActualReturnDate(LocalDateTime.now());
+        order.setStatus(com.mimi.domain.enums.OrderStatus.RETURNED);
+        orderRepository.save(order);
+    }
+
+    @Override
+    @Transactional
+    public void refundDeposit(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        
+        if (order.getActualReturnDate() == null) {
+            throw new IllegalArgumentException("Chưa xác nhận trả hàng");
+        }
+        
+        if (Boolean.TRUE.equals(order.getDepositRefunded())) {
+            throw new IllegalArgumentException("Đã hoàn trả tiền cọc rồi");
+        }
+        
+        order.setDepositRefunded(true);
+        orderRepository.save(order);
     }
 }

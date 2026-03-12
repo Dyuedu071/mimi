@@ -5,5 +5,8 @@ public enum OrderStatus {
     CONFIRMED,
     SHIPPING,
     COMPLETED,
-    CANCELLED
+    CANCELLED,
+    RENTING,      // Đang thuê
+    RETURNED,     // Đã trả hàng
+    OVERDUE       // Quá hạn trả
 }

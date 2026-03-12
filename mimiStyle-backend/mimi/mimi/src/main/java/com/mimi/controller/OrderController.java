@@ -36,4 +36,16 @@ public class OrderController {
         List<OrderResponse> orders = orderService.getOrderResponsesByBuyer(buyerId);
         return ResponseEntity.ok(orders);
     }
+
+    @PostMapping("/{id}/return")
+    public ResponseEntity<Map<String, Object>> returnRentalOrder(@PathVariable Long id) {
+        orderService.returnRentalOrder(id);
+        return ResponseEntity.ok(Map.of("success", true, "message", "Đã xác nhận trả hàng"));
+    }
+
+    @PostMapping("/{id}/refund-deposit")
+    public ResponseEntity<Map<String, Object>> refundDeposit(@PathVariable Long id) {
+        orderService.refundDeposit(id);
+        return ResponseEntity.ok(Map.of("success", true, "message", "Đã hoàn trả tiền cọc"));
+    }
 }

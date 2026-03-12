@@ -76,6 +76,9 @@ const STATUS_LABEL = {
   completed: 'Đã giao',
   delivered: 'Đã giao',
   cancelled: 'Đã hủy',
+  renting: 'Đang thuê',
+  returned: 'Đã trả hàng',
+  overdue: 'Quá hạn trả',
 };
 
 export default function OrderHistoryPage() {

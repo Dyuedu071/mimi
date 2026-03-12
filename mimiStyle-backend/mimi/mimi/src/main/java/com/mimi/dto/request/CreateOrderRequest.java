@@ -30,5 +30,7 @@ public class CreateOrderRequest {
         private Long productId;
         private Integer quantity;
         private Long variantId;
+        private String orderType; // "BUY" or "RENT"
+        private Integer rentDuration; // Số lượng đơn vị thuê (vd: 7 ngày, 2 tuần)
     }
 }

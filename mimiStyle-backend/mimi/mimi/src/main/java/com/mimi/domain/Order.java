@@ -63,6 +63,15 @@ public class Order {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
     
+    @Column(name = "expected_return_date")
+    private LocalDateTime expectedReturnDate;
+    
+    @Column(name = "actual_return_date")
+    private LocalDateTime actualReturnDate;
+    
+    @Column(name = "deposit_refunded")
+    private Boolean depositRefunded = false;
+    
     // Relationships
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
