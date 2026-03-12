@@ -238,18 +238,32 @@ export default function Header() {
               <div className="app-dropdown-divider"></div>
               <div className="app-dropdown-menu">
                 {user?.role === 'ADMIN' && (
-                  <button
-                    className="app-dropdown-item"
-                    type="button"
-                    onClick={() => {
-                      setShowDropdown(false);
-                      navigate('/user-management');
-                    }}
-                  >
-                    <Users className="app-dropdown-icon" size={20} />
-                    <span>Xem tất cả trang cá nhân</span>
-                    <ChevronRight className="app-dropdown-chevron" size={16} />
-                  </button>
+                  <>
+                    <button
+                      className="app-dropdown-item"
+                      type="button"
+                      onClick={() => {
+                        setShowDropdown(false);
+                        navigate('/user-management');
+                      }}
+                    >
+                      <Users className="app-dropdown-icon" size={20} />
+                      <span>Xem tất cả trang cá nhân</span>
+                      <ChevronRight className="app-dropdown-chevron" size={16} />
+                    </button>
+                    <button
+                      className="app-dropdown-item"
+                      type="button"
+                      onClick={() => {
+                        setShowDropdown(false);
+                        navigate('/admin/orders');
+                      }}
+                    >
+                      <Package className="app-dropdown-icon" size={20} />
+                      <span>Quản lý đơn hàng</span>
+                      <ChevronRight className="app-dropdown-chevron" size={16} />
+                    </button>
+                  </>
                 )}
                 <button
                   className="app-dropdown-item"

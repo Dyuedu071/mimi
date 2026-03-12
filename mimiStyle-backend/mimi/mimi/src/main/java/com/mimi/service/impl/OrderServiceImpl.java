@@ -148,6 +148,13 @@ public class OrderServiceImpl implements OrderService {
         return orders.stream().map(this::toOrderResponse).collect(java.util.stream.Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderResponse> getAllOrders() {
+        List<Order> orders = orderRepository.findAllByOrderByCreatedAtDesc();
+        return orders.stream().map(this::toOrderResponse).collect(java.util.stream.Collectors.toList());
+    }
+
     private OrderResponse toOrderResponse(Order order) {
         List<OrderItemResponse> itemResponses = order.getOrderItems() == null ? List.of() :
             order.getOrderItems().stream().map(oi -> {

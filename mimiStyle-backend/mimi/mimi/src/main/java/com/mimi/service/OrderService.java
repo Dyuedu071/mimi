@@ -12,6 +12,7 @@ public interface OrderService {
     Order updateOrderStatus(Long orderId, UpdateOrderStatusRequest request);
     List<Order> getOrdersByBuyer(Long buyerId);
     List<OrderResponse> getOrderResponsesByBuyer(Long buyerId);
+    List<OrderResponse> getAllOrders();
     void returnRentalOrder(Long orderId);
     void refundDeposit(Long orderId);
     void deleteOrder(Long orderId);

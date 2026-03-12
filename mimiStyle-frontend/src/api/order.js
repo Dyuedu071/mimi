@@ -62,6 +62,16 @@ export async function getMyOrders(buyerId) {
 }
 
 /**
+ * Lấy tất cả đơn hàng trong hệ thống (dành cho admin).
+ * @returns {Promise<Array>}
+ */
+export async function getAllOrders() {
+  const res = await fetch(`${API_BASE_URL}/orders/all`);
+  if (!res.ok) throw new Error('Không thể tải danh sách đơn hàng');
+  return res.json();
+}
+
+/**
  * Xóa đơn hàng (chỉ dành cho admin).
  * @param {number} orderId
  */

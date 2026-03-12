@@ -37,6 +37,12 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<OrderResponse>> getAllOrders() {
+        List<OrderResponse> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(orders);
+    }
+
     @PostMapping("/{id}/return")
     public ResponseEntity<Map<String, Object>> returnRentalOrder(@PathVariable Long id) {
         orderService.returnRentalOrder(id);
