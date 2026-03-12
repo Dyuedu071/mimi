@@ -60,3 +60,18 @@ export async function getMyOrders(buyerId) {
     throw new Error('Dữ liệu trả về không hợp lệ');
   }
 }
+
+/**
+ * Xóa đơn hàng (chỉ dành cho admin).
+ * @param {number} orderId
+ */
+export async function deleteOrder(orderId) {
+  const res = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Không thể xóa đơn hàng');
+  }
+  return res.json();
+}

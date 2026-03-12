@@ -951,3 +951,36 @@
     flex-direction: column;
   }
 }
+
+/* Delete Order Button */
+.revenue-delete-order-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #dc2626;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 8px;
+}
+
+.revenue-delete-order-btn:hover:not(:disabled) {
+  background: #fecaca;
+  color: #b91c1c;
+}
+
+.revenue-delete-order-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .revenue-delete-order-btn {
+    padding: 6px 8px;
+  }
+}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PackageCheck, Truck, User, ChevronDown, ChevronUp } from 'lucide-react';
+import { PackageCheck, Truck, User, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { getSoldProducts } from '../api/revenue';
-import { updateOrderStatus } from '../api/order';
+import { updateOrderStatus, deleteOrder } from '../api/order';
 import { API_BASE_URL } from '../api/config';
 import '../styles/ProductOrdersPage.css';
 import '../styles/RevenuePage.css';
@@ -139,6 +139,23 @@ const ProductOrdersPage = () => {
     }
   };
 
+  const handleDeleteOrder = async (orderId) => {
+    if (!orderId) return;
+    const ok = window.confirm('⚠️ Bạn có chắc muốn xóa đơn hàng này? Hành động này không thể hoàn tác.');
+    if (!ok) return;
+    try {
+      setConfirmingOrderId(orderId);
+      await deleteOrder(orderId);
+      const data = await getSoldProducts(userId, null, null, null);
+      setSoldProducts(Array.isArray(data) ? data : []);
+      alert('✅ Đã xóa đơn hàng thành công');
+    } catch (err) {
+      alert(err?.message || 'Không thể xóa đơn hàng');
+    } finally {
+      setConfirmingOrderId(null);
+    }
+  };
+
   const formatPrice = (price) => {
     const n = Number(price);
     return new Intl.NumberFormat('vi-VN').format(Number.isNaN(n) ? 0 : n) + ' ₫';
@@ -199,6 +216,15 @@ const ProductOrdersPage = () => {
                     ) : (
                       <>Xem chi tiết <ChevronDown size={16} /></>
                     )}
+                  </button>
+                  <button
+                    type="button"
+                    className="revenue-delete-order-btn"
+                    onClick={() => handleDeleteOrder(order.orderId)}
+                    disabled={confirmingOrderId === order.orderId}
+                    title="Xóa đơn hàng"
+                  >
+                    <Trash2 size={16} />
                   </button>
                 </div>
                 <div className="revenue-order-products">

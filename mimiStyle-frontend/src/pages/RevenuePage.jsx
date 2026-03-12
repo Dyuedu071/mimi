@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PackageCheck, Truck, User, ChevronDown, ChevronUp, Calendar, BarChart3 } from 'lucide-react';
+import { PackageCheck, Truck, User, ChevronDown, ChevronUp, Calendar, BarChart3, Trash2 } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import RevenueChart from '../components/RevenueChart';
 import { getRevenueSummary, getSoldProducts, getDailyRevenue, getWeeklyRevenue } from '../api/revenue';
-import { updateOrderStatus } from '../api/order';
+import { updateOrderStatus, deleteOrder } from '../api/order';
 import { API_BASE_URL } from '../api/config';
 import '../styles/RevenuePage.css';
 
@@ -203,6 +203,22 @@ const RevenuePage = () => {
     }
   };
 
+  const handleDeleteOrder = async (orderId) => {
+    if (!orderId) return;
+    const ok = window.confirm('⚠️ Bạn có chắc muốn xóa đơn hàng này? Hành động này không thể hoàn tác.');
+    if (!ok) return;
+    try {
+      setConfirmingOrderId(orderId);
+      await deleteOrder(orderId);
+      await loadData();
+      alert('✅ Đã xóa đơn hàng thành công');
+    } catch (err) {
+      alert(err?.message || 'Không thể xóa đơn hàng');
+    } finally {
+      setConfirmingOrderId(null);
+    }
+  };
+
   const summary = revenueSummary ?? { totalRevenue: 0, totalProductsSold: 0, period: '' };
 
   const content = loading ? (
@@ -347,6 +363,15 @@ const RevenuePage = () => {
                             ) : (
                               <>Xem chi tiết <ChevronDown size={16} /></>
                             )}
+                          </button>
+                          <button
+                            type="button"
+                            className="revenue-delete-order-btn"
+                            onClick={() => handleDeleteOrder(order.orderId)}
+                            disabled={confirmingOrderId === order.orderId}
+                            title="Xóa đơn hàng"
+                          >
+                            <Trash2 size={16} />
                           </button>
                         </div>
                         <div className="revenue-order-products">
