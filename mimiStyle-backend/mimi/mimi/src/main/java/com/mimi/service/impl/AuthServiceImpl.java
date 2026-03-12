@@ -66,8 +66,7 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        // Tăng lượt truy cập và cập nhật thời gian hoạt động mỗi khi đăng nhập
-        user.setPageViews((user.getPageViews() != null ? user.getPageViews() : 0) + 1);
+        // Cập nhật thời gian hoạt động mỗi khi đăng nhập
         user.setLastActiveAt(java.time.LocalDateTime.now());
         userRepository.save(user);
 

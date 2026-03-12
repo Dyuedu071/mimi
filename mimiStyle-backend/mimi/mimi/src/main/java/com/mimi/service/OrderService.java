@@ -14,4 +14,5 @@ public interface OrderService {
     List<OrderResponse> getOrderResponsesByBuyer(Long buyerId);
     void returnRentalOrder(Long orderId);
     void refundDeposit(Long orderId);
+    void deleteOrder(Long orderId);
 }

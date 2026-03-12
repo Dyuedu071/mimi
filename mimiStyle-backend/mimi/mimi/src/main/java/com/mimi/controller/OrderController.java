@@ -48,4 +48,10 @@ public class OrderController {
         orderService.refundDeposit(id);
         return ResponseEntity.ok(Map.of("success", true, "message", "Đã hoàn trả tiền cọc"));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+        return ResponseEntity.ok(Map.of("success", true, "message", "Đã xóa đơn hàng thành công"));
+    }
 }

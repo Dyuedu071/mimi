@@ -220,4 +220,18 @@ public class OrderServiceImpl implements OrderService {
         order.setDepositRefunded(true);
         orderRepository.save(order);
     }
+
+
+    @Override
+    @Transactional
+    public void deleteOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+
+        // Chỉ admin mới có thể xóa đơn hàng
+        // Có thể thêm kiểm tra role ở đây hoặc ở controller layer
+
+        orderRepository.delete(order);
+    }
+
 }
