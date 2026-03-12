@@ -170,9 +170,6 @@ export default function HomePage() {
 
         <div className="product-info">
           <div className="product-meta-row">
-            <span className="product-category-pill">
-              {product.categoryName || product.category?.name || 'Danh mục khác'}
-            </span>
             {getStatusBadge(product.status)}
           </div>
 

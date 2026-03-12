@@ -448,10 +448,6 @@ const ProductManagementPage = () => {
 
                 <div className="product-info">
                   <div className="product-meta-row">
-                    {/* TODO: thay bằng tên thể loại từ API nếu có */}
-                    <span className="product-category-pill">
-                      {product.categoryName || product.category?.name || 'Danh mục khác'}
-                    </span>
                     {getStatusBadge(product.status)}
                   </div>
 

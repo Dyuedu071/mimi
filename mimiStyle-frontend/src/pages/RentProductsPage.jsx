@@ -102,9 +102,6 @@ export default function RentProductsPage() {
                       </div>
                       <div className="product-info">
                         <div className="product-meta-row">
-                          <span className="product-category-pill">
-                            {product.categoryName || product.category?.name || 'Khác'}
-                          </span>
                         </div>
                         <h3 className="product-name">{product.name}</h3>
                         <div className="product-prices">

@@ -276,9 +276,6 @@ export default function AllProductsPage() {
                     )}
                   </div>
                   <div className="product-content">
-                    <div className="product-category">
-                      {product.categoryName || product.category?.name || 'Khác'}
-                    </div>
                     <h3 className="product-name">{product.name}</h3>
                     <div className="product-price">
                       {product.buyPrice ? (
