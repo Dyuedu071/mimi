@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Truck, Banknote, CreditCard } from 'lucide-react';
 import Layout from '../components/layout/Layout';
@@ -215,32 +215,25 @@ export default function CheckoutPaymentPage() {
                 const variantText = [item.colorLabel, item.sizeLabel].filter(Boolean).join(' / ') || '';
                 
                 let lineTotal = 0;
-                let priceDisplay = '';
                 if (item.orderType === 'RENT') {
                   const rentPrice = item.product?.rentPrice ?? 0;
                   const deposit = item.product?.deposit ?? 0;
                   const duration = item.rentDuration ?? 1;
-                  const rentUnit = item.product?.rentUnit === 'DAY' ? 'ngày' : item.product?.rentUnit === 'WEEK' ? 'tuần' : 'tháng';
                   lineTotal = (rentPrice * duration + deposit) * item.quantity;
-                  priceDisplay = `Thuê ${duration} ${rentUnit}`;
                 } else {
                   const buyPrice = item.product?.buyPrice ?? item.product?.price ?? 0;
                   lineTotal = buyPrice * item.quantity;
-                  priceDisplay = 'Mua';
                 }
+                
                 return (
                   <div key={`${item.productId}-${item.colorIndex}-${item.sizeIndex}`} className="payment-summary-item">
                     <img className="payment-summary-img" src={imgSrc} alt={item.product?.name} />
                     <div className="payment-summary-info">
                       <div className="payment-summary-name">{item.product?.name}</div>
                       {variantText && <div className="payment-summary-variant">{variantText}</div>}
-                      {item.orderType === 'RENT' ? (
+                      {item.orderType === 'RENT' && (
                         <div className="payment-summary-deposit">
-                          Thuê {item.rentDuration} {item.product?.rentUnit === 'DAY' ? 'ngày' : item.product?.rentUnit === 'WEEK' ? 'tuần' : 'tháng'}: {formatPrice(itemPrice * (item.rentDuration || 1))} + Cọc: {formatPrice(itemDeposit)}
-                        </div>
-                      ) : itemDeposit > 0 && (
-                        <div className="payment-summary-deposit">
-                          Giá thuê: {formatPrice(itemPrice)} + Cọc: {formatPrice(itemDeposit)}
+                          Thuê {item.rentDuration || 1} {item.product?.rentUnit === 'DAY' ? 'ngày' : item.product?.rentUnit === 'WEEK' ? 'tuần' : 'tháng'}
                         </div>
                       )}
                       <div className="payment-summary-qty">Số lượng: {item.quantity}</div>
