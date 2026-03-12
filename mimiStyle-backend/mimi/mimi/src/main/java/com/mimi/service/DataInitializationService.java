@@ -219,6 +219,7 @@ public class DataInitializationService {
         
         // Initialize additional users
         initializeAdditionalUsers();
+        initializeAdditionalUsers2();
     }
     
     private void initializeAdditionalUsers() {
@@ -333,5 +334,95 @@ public class DataInitializationService {
         }
         
         System.out.println("User initialization completed: " + addedCount + " added, " + skippedCount + " skipped");
+    }
+
+    private void initializeAdditionalUsers2() {
+        String[][] userData = {
+            {"tqvhung217", "tqvhung217@gmail.com", "123123", "Tống Quang Việt Hưng", "0984433851", "2000-01-01", "Hà Nội"},
+            {"hu08072007", "hu08072007@gmail.com", "123123", "Nguyễn Thị Thu Hương", "0828082286", "2000-01-01", "Hà Nội"},
+            {"quynhx807", "quynhx807@gmail.com", "123123", "Trần Thị Như Quỳnh", "0916040483", "2000-01-01", "Hà Nội"},
+            {"baoan199206", "baoan199206@gmail.com", "123123", "Quản Lưu Bảo An", "0923053319", "2000-01-01", "Hà Nội"},
+            {"thangdqhe172702", "thangdqhe172702@fpt.edu.vn", "123123", "Đỗ Quyết Thắng", "0915694875", "2000-01-01", "Hà Nội"},
+            {"trannamkhanh272006", "trannamkhanh272006@gmail.com", "123123", "Trần Nam Khánh", "0966054206", "2000-01-01", "Hà Nội"},
+            {"nguyenthiquynhnhu14112006", "nguyenthiquynhnhu14112006@gmail.com", "123123", "Nguyễn Thị Quỳnh Như", "0984291283", "2000-01-01", "Hà Nội"},
+            {"haianh6227", "haianh6227@gmail.com", "123123", "Đinh Hải Anh", "0868381029", "2000-01-01", "Hà Nội"},
+            {"nguyenthuylinh261106", "nguyenthuylinh261106@gmail.com", "123123", "Nguyễn Thuỳ Linh", "0339008358", "2000-01-01", "Hà Nội"},
+            {"phongnthe181783", "phongnthe181783@fpt.edu.vn", "123123", "Nguyễn Thanh Phong", "0366079769", "2000-01-01", "Hà Nội"},
+            {"nzuyenkhanhly28007", "nzuyenkhanhly28007@gmail.com", "123123", "Nguyễn Khánh Ly", "0337067687", "2000-01-01", "Hà Nội"},
+            {"lucikem27", "lucikem27@gmail.com", "123123", "Đỗ Thanh Thùy", "0359574633", "2000-01-01", "Hà Nội"},
+            {"uyen09725", "uyen09725@gmail.com", "123123", "Nguyễn Phương Uyên", "0968880288", "2000-01-01", "Hà Nội"},
+            {"uyen23112006", "uyen23112006@gmail.com", "123123", "Trần Phương Uyên", "0362749554", "2000-01-01", "Hà Nội"},
+            {"uyenvuong523", "uyenvuong523@gmail.com", "123123", "Vương Mai Uyên", "0364579102", "2000-01-01", "Hà Nội"},
+            {"nguyenthihue2592004", "nguyenthihue2592004@gmail.com", "123123", "Nguyễn Thị Huệ", "0904043529", "2000-01-01", "Hà Nội"},
+            {"dophuongthao646", "dophuongthao646@gmail.com", "123123", "Đỗ Phương Thảo", "0325876970", "2000-01-01", "Hà Nội"},
+            {"vn443487", "vn443487@gmail.com", "123123", "Nguyễn Quốc Vượng", "0376437206", "2000-01-01", "Hà Nội"},
+            {"bimbim221107", "bimbim221107@gmail.com", "123123", "Đỗ Quý An", "0961323597", "2000-01-01", "Hà Nội"},
+            {"ldaothi1111", "ldaothi1111@gmail.com", "123123", "Đào Thị Loan", "0868586206", "2000-01-01", "Hà Nội"},
+            {"nguyenanhduc13082005", "nguyenanhduc13082005@gmail.com", "123123", "Nguyễn Anh Đức", "0964983507", "2000-01-01", "Hà Nội"},
+            {"mchi712006", "mchi712006@gmail.com", "123123", "Hà Mai Chi", "0333569361", "2000-01-01", "Hà Nội"},
+            {"nguyenmyy0704", "nguyenmyy0704@gmail.com", "123123", "Nguyễn Hà Hải My", "0967643900", "2000-01-01", "Hà Nội"},
+            {"trkhoadang24", "trkhoadang24@gmail.com", "123123", "Trần Khoa Đăng", "0359468003", "2000-01-01", "Hà Nội"},
+            {"bhien8151", "bhien8151@gmail.com", "123123", "Bùi Thị Hiền", "0399287400", "2000-01-01", "Hà Nội"},
+            {"p_thuphuonq", "p.thuphuonq@gmail.com", "123123", "Phạm Thu Phương", "0865517780", "2000-01-01", "Hà Nội"},
+            {"phamhoangthuong3", "phamhoangthuong3@gmail.com", "123123", "Phạm Thị Hoàng Thương", "0384353282", "2000-01-01", "Hà Nội"},
+            {"nguyenanhq45", "nguyenanhq45@gmail.com", "123123", "Nguyễn Anh Quân", "0327161881", "2000-01-01", "Hà Nội"},
+            {"gianhun83", "gianhun83@gmail.com", "123123", "Nguyễn Gia Như", "0915669126", "2000-01-01", "Hà Nội"},
+            {"ductuannguyen8906", "ductuannguyen8906@gmail.com", "123123", "Nguyễn Đức Tuân", "0989860632", "2000-01-01", "Hà Nội"},
+            {"shouldsmile135", "shouldsmile135@gmail.com", "123123", "Nguyễn Quang Minh", "0913181233", "2000-01-01", "Hà Nội"},
+            {"www_hunglucky_05", "www.hunglucky.05@gmail.com", "123123", "Tạ Đức Hưng", "0342072676", "2000-01-01", "Hà Nội"},
+            {"longhahoang14", "longhahoang14@gmail.com", "123123", "Hà Hoàng Long", "0918061005", "2000-01-01", "Hà Nội"},
+            {"az_07062004", "az.07062004@gmail.com", "123123", "Trần Đức Minh", "0968785881", "2000-01-01", "Địa chỉ thường trú: Số nhà 5-Thôn Kỳ Thủy-Xã Bình Minh-Huyện Thanh Oai-Hà Nội"},
+            {"tri82842006", "tri82842006@gmail.com", "123123", "Nguyễn Hữu Minh Trí", "0981190522", "2000-01-01", "Hà Nội"},
+            {"ngankbabi1209", "ngankbabi1209@gmail.com", "123123", "Nguyễn Thị Kim Ngân", "0325761585", "2000-01-01", "Hà Nội"},
+            {"phucthanh7733", "phucthanh7733@gmail.com", "123123", "Phạm Thuỳ Chi", "0963388297", "2000-01-01", "Hà Nội"},
+            {"pngocbich2004", "pngocbich2004@gmail.com", "123123", "Phạm Ngọc Bích", "0974877850", "2000-01-01", "Hà Nội"},
+            {"ddinhthaonguyen2512", "ddinhthaonguyen2512@gmail.com", "123123", "Đinh Thảo Nguyên", "0356031841", "2000-01-01", "Hà Nội"},
+            {"thuyduongthuy8205", "thuyduongthuy8205@gmail.com", "123123", "Nguyễn Thuỳ Dương", "0981543438", "2000-01-01", "Hà Nội"},
+            {"sitchs170349", "sitchs170349@fpt.edu.vn", "123123", "Trần Công Sĩ", "0356723294", "2000-01-01", "Hà Nội"},
+            {"bakiennguyen288", "bakiennguyen288@gmail.com", "123123", "Nguyễn Thị Hương Ly", "0983566489", "2000-01-01", "Hà Nội"},
+            {"nguyenlinh208205", "nguyenlinh208205@gmail.com", "123123", "Nguyễn Phương Linh", "0963430822", "2000-01-01", "Hà Nội"},
+            {"vtlananh0311", "vtlananh0311@gmail.com", "123123", "Vũ Thị Lan Anh", "0382914211", "2000-01-01", "Hà Nội"},
+            {"heekeysex", "heekeysex@gmail.com", "123123", "Nguyễn Thị Hồng Nhung", "0967291623", "2000-01-01", "Hà Nội"}
+        };
+        
+        int addedCount = 0;
+        int skippedCount = 0;
+        
+        for (String[] data : userData) {
+            String username = data[0];
+            String email = data[1];
+            String password = data[2];
+            String fullName = data[3];
+            String phoneNumber = data[4];
+            String birthdayStr = data[5];
+            String address = data[6];
+            
+            // Skip if email already exists
+            if (userRepository.existsByEmail(email)) {
+                skippedCount++;
+                continue;
+            }
+            
+            // Skip if username already exists
+            if (userRepository.existsByUsername(username)) {
+                skippedCount++;
+                continue;
+            }
+            
+            User user = new User();
+            user.setUsername(username);
+            user.setEmail(email);
+            user.setPassword(passwordEncoder.encode(password));
+            user.setFullName(fullName);
+            user.setPhoneNumber(phoneNumber);
+            user.setBirthday(LocalDate.parse(birthdayStr));
+            user.setAddress(address);
+            user.setRole(Role.USER);
+            
+            userRepository.save(user);
+            addedCount++;
+        }
+        
+        System.out.println("User initialization 2 completed: " + addedCount + " added, " + skippedCount + " skipped");
     }
 }
