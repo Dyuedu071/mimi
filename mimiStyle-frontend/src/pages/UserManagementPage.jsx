@@ -207,14 +207,6 @@ const UserManagementPage = () => {
             <div className="table-header">
               <h2>Danh sách người dùng ({totalItems})</h2>
               <div className="table-controls">
-                <button 
-                  onClick={handleAutoIncrementAll} 
-                  className="auto-increment-btn"
-                  disabled={loading || users.length === 0}
-                >
-                  <RefreshCw size={16} />
-                  Tự động tăng pageview
-                </button>
                 <label>
                   Hiển thị:
                   <select value={pageSize} onChange={handlePageSizeChange} className="page-size-select">
